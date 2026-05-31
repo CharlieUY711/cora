@@ -1,0 +1,20 @@
+@'
+[
+  { "id":"uy", "name":"Uruguay",          "role":"HQ · Hub principal",    "lat":-33,   "lng":-56,   "r":7, "color":"#F5C26B", "layer":"cono",      "primary":true  },
+  { "id":"ar", "name":"Buenos Aires",     "role":"Distribución Cono Sur", "lat":-34.6, "lng":-58.4, "r":4, "color":"#0EA5E9", "layer":"cono"                       },
+  { "id":"br", "name":"São Paulo",        "role":"Distribución Cono Sur", "lat":-23.5, "lng":-46.6, "r":4, "color":"#0EA5E9", "layer":"cono"                       },
+  { "id":"cl", "name":"Santiago",         "role":"Distribución Cono Sur", "lat":-33.4, "lng":-70.7, "r":4, "color":"#0EA5E9", "layer":"cono"                       },
+  { "id":"py", "name":"Asunción",         "role":"Distribución Cono Sur", "lat":-25.3, "lng":-57.6, "r":3, "color":"#0EA5E9", "layer":"cono"                       },
+  { "id":"cn", "name":"Shanghai",         "role":"Origen · China",        "lat":31.2,  "lng":121.5, "r":4, "color":"#00E5FF", "layer":"origins"                    },
+  { "id":"sg", "name":"Singapur",         "role":"Origen · Asia SE",      "lat":1.3,   "lng":103.8, "r":3, "color":"#A78BFA", "layer":"origins"                    },
+  { "id":"in", "name":"Mumbai",           "role":"Origen · India",        "lat":19.1,  "lng":72.9,  "r":3, "color":"#A78BFA", "layer":"origins"                    },
+  { "id":"tr", "name":"Turquía",          "role":"Origen especial",       "lat":39.9,  "lng":32.9,  "r":3, "color":"#A78BFA", "layer":"origins"                    },
+  { "id":"nl", "name":"Rotterdam",        "role":"Origen · Europa",       "lat":51.9,  "lng":4.5,   "r":4, "color":"#00E5FF", "layer":"origins"                    },
+  { "id":"es", "name":"Barcelona",        "role":"Origen · España",       "lat":41.4,  "lng":2.2,   "r":3, "color":"#00E5FF", "layer":"origins"                    },
+  { "id":"us", "name":"Nueva York",       "role":"Origen · EE.UU.",       "lat":40.7,  "lng":-74,   "r":4, "color":"#00E5FF", "layer":"origins"                    },
+  { "id":"mx", "name":"Ciudad de México", "role":"Expansión 2029",        "lat":19.4,  "lng":-99.1, "r":3, "color":"#FF8A4C", "layer":"expansion"                  },
+  { "id":"pe", "name":"Lima",             "role":"Expansión 2027",        "lat":-12,   "lng":-77,   "r":3, "color":"#FF8A4C", "layer":"expansion"                  },
+  { "id":"co", "name":"Bogotá",           "role":"Expansión 2028",        "lat":4.7,   "lng":-74.1, "r":3, "color":"#FF8A4C", "layer":"expansion"                  },
+  { "id":"bo", "name":"Santa Cruz",       "role":"Expansión 2027",        "lat":-17.8, "lng":-63.2, "r":3, "color":"#FF8A4C", "layer":"expansion"                  }
+]
+'@ | Set-Content "C:\CORE\apps\core-landing\content\landing\hubs.json" -Encoding UTF8
