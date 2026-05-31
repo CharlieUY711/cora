@@ -168,6 +168,7 @@ export function CoreGlobe({
     let W = 0, H = 0, R = 0, cx = 0, cy = 0;
 
     function resize() {
+      if (!wrap) return;
       const rect = wrap.getBoundingClientRect();
       W = rect.width; H = Math.round(W * 0.62);
       const dpr = window.devicePixelRatio || 1;
