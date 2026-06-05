@@ -1,81 +1,56 @@
 // ═══════════════════════════════════════════════════════════════
-// CORE Design System — Base Tokens v1.1
-// Fuente de verdad para todo el ecosistema CORE
-// Ninguna app debe definir colores, tipografías o espaciados propios.
+// CORE Design System — tokens v1.2
+// Actualizado con valores reales de core.com.uy
 // ═══════════════════════════════════════════════════════════════
 
-// ── COLORES CORE ─────────────────────────────────────────────
 export const colors = {
 
-  // ── Brand primario — Navy
-  navy:        '#1B3A6B',   // identidad principal, favicon
-  navyDark:    '#0D2B55',   // navbar, headers oscuros
-  navyDeep:    '#091E3A',   // fondos muy oscuros
-  navyLight:   '#1A3F6F',   // hover sobre navy
-  blue:        '#1A4F9C',   // links, CTAs
-  blueLight:   '#2E6FC4',   // hover sobre blue
-  bluePale:    '#D8E8F8',   // fondos info
+  // ── Brand — extraídos de core.com.uy ─────────────────────
+  // Fondo principal de la landing
+  bgDeep:      '#0A1F3D',   // fondo hero y página
+  bgDark:      '#1e2d42',   // cards, navbar scrolled
+  bgCard:      'rgba(15,56,117,0.12)',  // cards con tinte blue
+  bgCardHover: 'rgba(27,90,196,0.22)', // cards hover
 
-  // ── Brand secundario — Gold
-  gold:        '#C9A84C',   // acento principal, badges, highlights
-  goldLight:   '#DDB96A',   // hover sobre gold
-  goldDark:    '#A8893A',   // gold sobre fondo claro
-  goldPale:    'rgba(201,168,76,0.12)', // fondos con tinte gold
+  // Blues
+  blue:        '#1b5ac4',   // CTA principal, botones
+  blueHover:   '#3b82f6',   // hover sobre blue
+  blueLight:   '#7db8f7',   // textos secundarios azules, subtítulos
+  bluePale:    'rgba(59,130,246,0.15)', // fondos info
 
-  // ── Neutros
-  white:       '#FFFFFF',
-  black:       '#000000',
-  grayFaint:   '#F8FAFC',
-  grayLight:   '#F2F5FA',
-  grayBorder:  '#C8D5E8',
-  grayMid:     '#7A7A7A',
-  grayBody:    '#4A4A4A',
-  grayDark:    '#1A1A1A',
+  // Borders / separadores
+  border:      '#1e3354',   // bordes de cards
+  borderHover: 'rgba(59,130,246,0.4)', // bordes hover
 
-  // ── Dark mode base (Biblioteca, Foundation, Hub)
-  dark: {
-    bg:        '#0a0a0a',
-    bg2:       '#111111',
-    bg3:       '#161616',
-    border:    '#1f1f1f',
-    border2:   '#2a2a2a',
-    text:      '#e5e5e5',
-    text2:     '#888888',
-    text3:     '#555555',
-  },
+  // Gold / Amber — acento
+  gold:        '#c9993a',   // acento principal
+  goldLight:   '#f5c870',   // gradiente gold claro
+  goldPale:    'rgba(201,153,58,0.1)', // fondos gold
 
-  // ── Semánticos
-  success:     '#1D9E75',
-  successLight:'#E8F7F2',
-  warning:     '#F39C12',
-  warningLight:'#FEF9E7',
-  danger:      '#C0392B',
-  dangerLight: '#FADBD8',
-  info:        '#2E6FC4',
-  infoLight:   '#D8E8F8',
+  // Textos
+  textPrimary: '#ffffff',
+  textSecond:  '#8fa3bf',   // textos secundarios
+  textMuted:   '#4a6080',   // textos muy tenues
 
-  // ── Second Hand (submarca)
-  secondHand: {
-    primary:      '#1D9E75',
-    primaryHover: '#16845F',
-    soft:         '#4ECBA0',
-    dark:         '#0D6B4E',
-    bg:           '#EEF7F2',
-    pale:         '#F0FAF6',
-    border:       '#A8DCC8',
-  },
+  // Semánticos
+  success:     '#4ade80',   // verde live / positivo
+  danger:      '#ef4444',
+  warning:     '#f5c870',
+
+  // Legacy (mantener compatibilidad)
+  navy:        '#0A1F3D',
+  navyDark:    '#0D2B55',
 
 } as const
 
-// ── TIPOGRAFÍA ────────────────────────────────────────────────
 export const typography = {
   family: {
-    base:    "Calibri, 'Segoe UI', system-ui, sans-serif",
-    mono:    "'Courier New', 'Consolas', monospace",
-    display: "'Bebas Neue', sans-serif",
-    code:    "'JetBrains Mono', 'Fira Code', monospace",
+    base:    "'Geist', 'Inter', system-ui, sans-serif",
+    mono:    "'Geist Mono', 'Courier New', monospace",
+    display: "'Geist', system-ui, sans-serif",
   },
   weight: {
+    light:    300,
     regular:  400,
     medium:   500,
     semibold: 600,
@@ -92,43 +67,26 @@ export const typography = {
     '2xl':   '1.5rem',
     '3xl':   '2rem',
     '4xl':   '3rem',
-    display: '4rem',
-  },
-  lineHeight: {
-    tight:   1.1,
-    snug:    1.2,
-    normal:  1.5,
-    relaxed: 1.6,
-    loose:   1.8,
+    '5xl':   '4rem',
+    hero:    'clamp(3rem, 7vw, 5rem)',
   },
   letterSpacing: {
     tight:   '-0.02em',
     normal:  '0',
+    mono:    '0.15em',   // para labels mono uppercase
     wide:    '0.05em',
     wider:   '0.08em',
-    widest:  '0.15em',
   },
 } as const
 
-// ── ESPACIADO (base 4px) ──────────────────────────────────────
 export const spacing = {
-  0:  '0',
-  1:  '4px',
-  2:  '8px',
-  3:  '12px',
-  4:  '16px',
-  5:  '20px',
-  6:  '24px',
-  7:  '28px',
-  8:  '32px',
-  10: '40px',
-  12: '48px',
-  16: '64px',
-  20: '80px',
-  24: '96px',
+  0:  '0',     1:  '4px',   2:  '8px',
+  3:  '12px',  4:  '16px',  5:  '20px',
+  6:  '24px',  7:  '28px',  8:  '32px',
+  10: '40px',  12: '48px',  16: '64px',
+  20: '80px',  24: '96px',  28: '112px',
 } as const
 
-// ── RADIOS ────────────────────────────────────────────────────
 export const radius = {
   none:   '0',
   sm:     '4px',
@@ -137,44 +95,30 @@ export const radius = {
   xl:     '16px',
   '2xl':  '24px',
   pill:   '9999px',
-  circle: '50%',
 } as const
 
-// ── SOMBRAS ───────────────────────────────────────────────────
 export const shadows = {
-  none:   'none',
-  soft:   '0 2px 8px rgba(13,43,85,.08), 0 1px 3px rgba(13,43,85,.04)',
-  medium: '0 4px 16px rgba(13,43,85,.12), 0 2px 6px rgba(13,43,85,.06)',
-  strong: '0 8px 28px rgba(13,43,85,.16), 0 4px 10px rgba(13,43,85,.08)',
-  card:   '0 2px 8px rgba(13,43,85,.08)',
-  focus:  '0 0 0 3px rgba(46,111,196,.3)',
+  none:     'none',
+  card:     '0 2px 8px rgba(0,0,0,.2)',
+  cardHover:'0 8px 24px rgba(0,0,0,.3)',
+  blue:     '0 8px 24px rgba(27,90,196,.3)',
+  gold:     '0 8px 24px rgba(201,153,58,.2)',
+  focus:    '0 0 0 3px rgba(27,90,196,.4)',
 } as const
 
-// ── MOTION ────────────────────────────────────────────────────
 export const motion = {
   duration: {
-    instant:  '0ms',
-    fast:     '150ms',
-    normal:   '200ms',
-    slow:     '300ms',
-    verySlow: '600ms',
+    fast:    '150ms',
+    normal:  '200ms',
+    slow:    '300ms',
+    slower:  '500ms',
   },
   easing: {
     default: 'ease-in-out',
-    in:      'ease-in',
-    out:     'ease-out',
     spring:  'cubic-bezier(0.34, 1.56, 0.64, 1)',
-    linear:  'linear',
-  },
-  transition: {
-    fast:   'all 150ms ease-in-out',
-    normal: 'all 200ms ease-in-out',
-    slow:   'all 300ms ease-in-out',
-    color:  'color 200ms ease-in-out, background-color 200ms ease-in-out',
   },
 } as const
 
-// ── BREAKPOINTS ───────────────────────────────────────────────
 export const breakpoints = {
   sm:   '640px',
   md:   '768px',
@@ -183,58 +127,30 @@ export const breakpoints = {
   '2xl':'1536px',
 } as const
 
-// ── LAYOUT ────────────────────────────────────────────────────
 export const layout = {
-  maxWidth:     '1400px',
+  maxWidth:     '1280px',  // max-w-7xl de la landing
   sidebarWidth: '220px',
-  navbarHeight: '48px',
-  paddingX:     spacing[8],
+  navbarHeight: '56px',
+  paddingX:     spacing[6],
 } as const
 
-// ── COMPONENT TOKENS ─────────────────────────────────────────
-export const components = {
-  button: {
-    height:        '32px',
-    heightSm:      '28px',
-    heightLg:      '40px',
-    paddingX:      spacing[4],
-    fontSize:      typography.size.sm,
-    fontWeight:    typography.weight.bold,
-    letterSpacing: typography.letterSpacing.wide,
-    radius:        radius.sm,
-    transition:    motion.transition.normal,
-  },
-  card: {
-    bg:        colors.white,
-    border:    colors.grayBorder,
-    radius:    radius.md,
-    shadow:    shadows.card,
-    padding:   spacing[4],
-    paddingLg: spacing[6],
-  },
-  input: {
-    height:  '36px',
-    radius:  radius.sm,
-    fontSize:typography.size.md,
-  },
-  navbar: {
-    height:   '48px',
-    bgDark:   colors.navyDark,
-    bgLight:  colors.white,
-  },
+// ── Identidad por producto ────────────────────────────────────
+export const products = {
+  core:         { name: 'CORE',        initial: 'C', bg: '#1b5ac4', byline: 'Global Supply. Regional Growth.' },
+  market:       { name: 'MARKET',      initial: 'M', bg: '#1b5ac4', byline: 'by CORE' },
+  biblio:       { name: 'BIBLIOTECA',  initial: 'B', bg: '#0A1F3D', byline: 'by CORE' },
+  foundation:   { name: 'FOUNDATION',  initial: 'F', bg: '#0A1F3D', byline: 'by CORE' },
+  hub:          { name: 'HUB',         initial: 'H', bg: '#0A1F3D', byline: 'by CORE' },
+  marketing:    { name: 'MARKETING',   initial: 'M', bg: '#1b5ac4', byline: 'by CORE' },
+  logistics:    { name: 'LOGISTICS',   initial: 'L', bg: '#1b5ac4', byline: 'by CORE' },
+  customs:      { name: 'CUSTOMS',     initial: 'C', bg: '#0A1F3D', byline: 'by CORE' },
+  intelligence: { name: 'INTELLIGENCE',initial: 'I', bg: '#1b5ac4', byline: 'by CORE' },
+  finance:      { name: 'FINANCE',     initial: 'F', bg: '#0A1F3D', byline: 'by CORE' },
 } as const
 
-// ── EXPORT PRINCIPAL ──────────────────────────────────────────
 export const tokens = {
-  colors,
-  typography,
-  spacing,
-  radius,
-  shadows,
-  motion,
-  breakpoints,
-  layout,
-  components,
+  colors, typography, spacing, radius,
+  shadows, motion, breakpoints, layout, products,
 } as const
 
 export type Tokens = typeof tokens

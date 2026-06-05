@@ -1,97 +1,72 @@
 /* ═══════════════════════════════════════════════════════════════
-   CORE Design System — globals.css v1.1
-   Este es el ÚNICO archivo CSS base del ecosistema.
-   Todas las apps importan este archivo. Nadie define variables propias.
+   CORE Design System — globals.css v1.2
+   Basado en core.com.uy — estética oficial del ecosistema
    ═══════════════════════════════════════════════════════════════ */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── CSS Custom Properties — Design Tokens ──────────────────── */
 :root {
-  /* Brand — Navy */
-  --color-navy:         #1B3A6B;
-  --color-navy-dark:    #0D2B55;
-  --color-navy-deep:    #091E3A;
-  --color-navy-light:   #1A3F6F;
-  --color-blue:         #1A4F9C;
-  --color-blue-light:   #2E6FC4;
-  --color-blue-pale:    #D8E8F8;
+  /* ── Fondos ─────────────────────────────────────── */
+  --bg-deep:       #0A1F3D;
+  --bg-dark:       #1e2d42;
+  --bg-card:       rgba(15,56,117,0.12);
+  --bg-card-hover: rgba(27,90,196,0.22);
 
-  /* Brand — Gold */
-  --color-gold:         #C9A84C;
-  --color-gold-light:   #DDB96A;
-  --color-gold-dark:    #A8893A;
-  --color-gold-pale:    rgba(201, 168, 76, 0.12);
+  /* ── Blues ──────────────────────────────────────── */
+  --color-blue:        #1b5ac4;
+  --color-blue-hover:  #3b82f6;
+  --color-blue-light:  #7db8f7;
+  --color-blue-pale:   rgba(59,130,246,0.15);
 
-  /* Neutros */
-  --color-white:        #FFFFFF;
-  --color-gray-faint:   #F8FAFC;
-  --color-gray-light:   #F2F5FA;
-  --color-gray-border:  #C8D5E8;
-  --color-gray-mid:     #7A7A7A;
-  --color-gray-body:    #4A4A4A;
-  --color-gray-dark:    #1A1A1A;
+  /* ── Gold ───────────────────────────────────────── */
+  --color-gold:        #c9993a;
+  --color-gold-light:  #f5c870;
+  --color-gold-pale:   rgba(201,153,58,0.1);
 
-  /* Semánticos */
-  --color-success:      #1D9E75;
-  --color-success-bg:   #E8F7F2;
-  --color-warning:      #F39C12;
-  --color-warning-bg:   #FEF9E7;
-  --color-danger:       #C0392B;
-  --color-danger-bg:    #FADBD8;
-  --color-info:         #2E6FC4;
-  --color-info-bg:      #D8E8F8;
+  /* ── Borders ────────────────────────────────────── */
+  --color-border:       #1e3354;
+  --color-border-hover: rgba(59,130,246,0.4);
 
-  /* Tipografía */
-  --font-base:          Calibri, 'Segoe UI', system-ui, sans-serif;
-  --font-mono:          'Courier New', 'Consolas', monospace;
-  --font-display:       'Bebas Neue', sans-serif;
+  /* ── Texto ──────────────────────────────────────── */
+  --color-text:         #ffffff;
+  --color-text-2:       #8fa3bf;
+  --color-text-3:       #4a6080;
 
-  /* Espaciado */
-  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;
-  --space-4: 16px;  --space-5: 20px;  --space-6: 24px;
-  --space-7: 28px;  --space-8: 32px;  --space-10: 40px;
-  --space-12: 48px; --space-16: 64px; --space-20: 80px;
+  /* ── Semánticos ─────────────────────────────────── */
+  --color-success:  #4ade80;
+  --color-danger:   #ef4444;
+  --color-warning:  #f5c870;
 
-  /* Radios */
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   12px;
-  --radius-xl:   16px;
-  --radius-pill: 9999px;
+  /* ── Tipografía ─────────────────────────────────── */
+  --font-base: 'Geist', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'Courier New', monospace;
 
-  /* Sombras */
-  --shadow-sm:   0 1px 3px rgba(13,43,85,.06);
-  --shadow-md:   0 2px 8px rgba(13,43,85,.09);
-  --shadow-lg:   0 8px 24px rgba(13,43,85,.14);
-  --shadow-card: 0 2px 8px rgba(13,43,85,.08);
-  --shadow-focus:0 0 0 3px rgba(46,111,196,.3);
+  /* ── Espaciado ──────────────────────────────────── */
+  --space-1:4px; --space-2:8px;  --space-3:12px;
+  --space-4:16px;--space-5:20px; --space-6:24px;
+  --space-8:32px;--space-10:40px;--space-12:48px;
+  --space-16:64px;--space-20:80px;
 
-  /* Layout */
-  --layout-max-width:     1400px;
-  --layout-sidebar-width: 220px;
-  --layout-navbar-height: 48px;
+  /* ── Radios ─────────────────────────────────────── */
+  --radius-sm: 4px; --radius-md: 8px;
+  --radius-lg: 12px;--radius-xl: 16px;
+  --radius-2xl:24px;--radius-pill:9999px;
+
+  /* ── Sombras ────────────────────────────────────── */
+  --shadow-card:  0 2px 8px rgba(0,0,0,.2);
+  --shadow-blue:  0 8px 24px rgba(27,90,196,.3);
+  --shadow-gold:  0 8px 24px rgba(201,153,58,.2);
+  --shadow-focus: 0 0 0 3px rgba(27,90,196,.4);
+
+  /* ── Layout ─────────────────────────────────────── */
+  --max-width:     1280px;
+  --navbar-height: 56px;
 }
 
-/* ── Dark mode overrides (Biblioteca, Foundation, Hub) ──────── */
-[data-theme="dark"],
-.dark {
-  --color-bg:      #0a0a0a;
-  --color-bg-2:    #111111;
-  --color-bg-3:    #161616;
-  --color-border:  #1f1f1f;
-  --color-border-2:#2a2a2a;
-  --color-text:    #e5e5e5;
-  --color-text-2:  #888888;
-  --color-text-3:  #555555;
-}
-
-/* ── Reset base ─────────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   -webkit-font-smoothing: antialiased;
@@ -99,26 +74,20 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+/* ── Base — fondo oscuro CORE ───────────────────────────────── */
 body {
+  background-color: var(--bg-deep);
+  color: var(--color-text);
   font-family: var(--font-base);
-  color: var(--color-gray-body);
-  background: var(--color-white);
-}
-
-/* ── Dark mode body (apps que usan dark por defecto) ─────────── */
-[data-theme="dark"] body,
-.dark body {
-  background-color: #0a0a0a;
-  color: #e5e5e5;
+  min-height: 100vh;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────── */
 ::-webkit-scrollbar        { width: 4px; height: 4px; }
-::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: var(--color-gray-border); border-radius: 2px; }
-[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #2a2a2a; }
+::-webkit-scrollbar-track  { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb  { background: var(--color-border); border-radius: 2px; }
 
-/* ── Focus visible ──────────────────────────────────────────── */
+/* ── Focus ──────────────────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid var(--color-blue);
   outline-offset: 2px;
@@ -126,20 +95,22 @@ body {
 
 /* ── Selection ──────────────────────────────────────────────── */
 ::selection {
-  background: var(--color-blue-pale);
-  color: var(--color-navy-dark);
-}
-[data-theme="dark"] ::selection {
-  background: rgba(201, 168, 76, 0.2);
-  color: #e5e5e5;
+  background: rgba(27,90,196,0.35);
+  color: #fff;
 }
 
-/* ── Input autofill (dark mode) ─────────────────────────────── */
-[data-theme="dark"] input:-webkit-autofill,
-[data-theme="dark"] input:-webkit-autofill:hover,
-[data-theme="dark"] input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #111111 inset;
-  -webkit-text-fill-color: #e5e5e5;
-  caret-color: #e5e5e5;
+/* ── Input autofill ─────────────────────────────────────────── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #1e2d42 inset;
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ── Animación marquee (landing) ────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
