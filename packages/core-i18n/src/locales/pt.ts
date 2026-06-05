@@ -99,13 +99,13 @@ export const pt: Record<TranslationKeys, string> = {
 
   portal_hub_name:          'CORE Hub',
   portal_hub_desc:          'Portal de acesso único ao ecossistema interno.',
-  portal_biblio_name:       'Biblioteca CORE',
+  portal_biblio_name:         'Biblioteca',
   portal_biblio_desc:       'Documentação oficial — Arquitetura, Estratégia, Prompts e Roadmap.',
   portal_foundation_name:   'Foundation',
   portal_foundation_desc:   'Blueprint estratégico e técnico do ecossistema 2026–2035.',
   portal_marketing_name:    'Marketing',
   portal_marketing_desc:    'Decks, apresentações, pitches e materiais de marketing.',
-  portal_market_name:       'CORE Market',
+  portal_market_name:         'Market',
   portal_market_desc:       'Plataforma de comércio B2B, B2C e D2C para a América Latina.',
   portal_logistics_name:    'CORE Logistics',
   portal_logistics_desc:    'Gestão logística integrada — WMS, TMS e última milha.',
@@ -243,3 +243,4 @@ export const pt: Record<TranslationKeys, string> = {
   expansion_phase_planned:  'Planejado',
   expansion_phase_horizon:  'Horizonte',
 }
+
