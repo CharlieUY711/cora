@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CORE Biblioteca — Sistema de Autenticación
 
-## Getting Started
+## Archivos
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+/lib/supabaseClient.ts          → Cliente Supabase (browser)
+/types/supabase.ts              → Tipos de base de datos
+/app/login/page.tsx             → Pantalla de login (fullscreen)
+/app/aviso/page.tsx             → Pantalla de advertencia (ES/EN/PT)
+/middleware.ts                  → Protección de rutas
+/components/ui/Input.tsx        → Componente Input
+/components/ui/Button.tsx       → Componente Button
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Desinstalar paquete deprecado e instalar el correcto
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm uninstall @supabase/auth-helpers-nextjs
+npm install @supabase/ssr @supabase/supabase-js
+```
 
-## Learn More
+### 2. Variables de entorno — `.env.local`
 
-To learn more about Next.js, take a look at the following resources:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://axlbccznfgzgqurxxzzi.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<tu_anon_key>
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+En Vercel: Settings → Environment Variables → agregar las mismas dos variables.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+La `anon key` está en: Supabase Dashboard → Settings → API → `anon public`
 
-## Deploy on Vercel
+### 3. Flujo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+/login → OK → /aviso → Acepto   → /
+                      → Cancelar → /login (cierra sesión)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ruta protegida sin sesión → redirige a /login automáticamente
+```
+
+### 4. Push
+
+```bash
+cd C:\CORE\Biblioteca
+git add .
+git commit -m "fix: migrate to @supabase/ssr, remove deprecated auth-helpers"
+git push origin main
+```
+
+---
+
+**CORE · Biblioteca Interna · Confidencial · 2026**

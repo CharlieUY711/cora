@@ -1,0 +1,619 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D2B55;
+    --blue: #1A4F9C;
+    --blue-light: #2E6FC4;
+    --blue-pale: #D8E8F8;
+    --gold: #C9A84C;
+    --gray-body: #4A4A4A;
+    --gray-mid: #7A7A7A;
+    --gray-light: #F2F5FA;
+  }
+
+  .lib-wrap {
+    font-family: 'DM Sans', sans-serif;
+    padding: 0;
+    min-height: 600px;
+  }
+
+  .lib-header {
+    background: var(--navy);
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .lib-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .lib-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.08em;
+  }
+
+  .lib-tagline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .lib-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .gold-rule {
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .lib-body {
+    background: var(--color-background-tertiary, #F8F8F6);
+    padding: 20px 24px 28px;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  .search-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  .search-wrap i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    color: var(--gray-mid);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 8px 10px 8px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    border: 0.5px solid var(--color-border-secondary, rgba(0,0,0,0.2));
+    border-radius: var(--border-radius-md, 8px);
+    background: var(--color-background-primary, #fff);
+    color: var(--color-text-primary);
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--blue-light);
+  }
+
+  .filter-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 7px 14px;
+    border-radius: var(--border-radius-md, 8px);
+    border: 0.5px solid var(--color-border-secondary, rgba(0,0,0,0.2));
+    background: var(--color-background-primary, #fff);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+    padding-left: 2px;
+  }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .doc-card {
+    background: var(--color-background-primary, #fff);
+    border-radius: var(--border-radius-lg, 12px);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.12));
+    padding: 14px 14px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .doc-card:hover {
+    border-color: var(--blue-light);
+    transform: translateY(-1px);
+  }
+
+  .doc-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent, var(--blue-light));
+  }
+
+  .doc-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--icon-bg, var(--blue-pale));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .doc-icon i {
+    font-size: 16px;
+    color: var(--icon-color, var(--blue));
+  }
+
+  .doc-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+  }
+
+  .doc-desc {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .doc-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+  }
+
+  .doc-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--tag-bg, var(--blue-pale));
+    color: var(--tag-color, var(--blue));
+  }
+
+  .doc-version {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .chapters-section {
+    background: var(--color-background-primary, #fff);
+    border-radius: var(--border-radius-lg, 12px);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.12));
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .chapters-header {
+    padding: 12px 16px;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chapters-header-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chapters-header-title i {
+    font-size: 14px;
+  }
+
+  .chapters-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .chapter-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.07));
+    cursor: pointer;
+    gap: 12px;
+    transition: background 0.12s;
+  }
+
+  .chapter-row:last-child {
+    border-bottom: none;
+  }
+
+  .chapter-row:hover {
+    background: var(--color-background-secondary, #f5f5f5);
+  }
+
+  .chapter-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    min-width: 24px;
+    font-weight: 500;
+  }
+
+  .chapter-name {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    flex: 1;
+  }
+
+  .chapter-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .badge-tech { background: #E6F1FB; color: #185FA5; }
+  .badge-strategy { background: #EAF3DE; color: #3B6D11; }
+  .badge-ops { background: #FAEEDA; color: #854F0B; }
+  .badge-brand { background: #EEEDFE; color: #534AB7; }
+  .badge-data { background: #E1F5EE; color: #0F6E56; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--color-background-primary, #fff);
+    border-radius: var(--border-radius-md, 8px);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.1));
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .derivados-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .deriv-card {
+    background: var(--color-background-primary, #fff);
+    border-radius: var(--border-radius-lg, 12px);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0,0,0,0.12));
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .deriv-card:hover {
+    border-color: var(--blue-light);
+  }
+
+  .deriv-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.08);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .deriv-info {}
+
+  .deriv-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 3px;
+  }
+
+  .deriv-sub {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .deriv-audience {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .hidden { display: none !important; }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+  }
+</style>
+
+<h2 class="sr-only">CORE — Biblioteca de documentos internos. Acceso a documentos estratégicos, técnicos y operativos de la plataforma CORE.</h2>
+
+<div class="lib-wrap">
+  <div class="lib-header">
+    <div class="lib-brand">
+      <span class="lib-logo">CORE</span>
+      <span class="lib-tagline">Biblioteca interna · v1.0</span>
+    </div>
+    <span class="lib-meta">Mayo 2026 · Confidencial</span>
+  </div>
+  <div class="gold-rule"></div>
+
+  <div class="lib-body">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Documentos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">10</div>
+        <div class="stat-label">Capítulos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Derivados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Países</div>
+      </div>
+    </div>
+
+    <div class="search-row">
+      <div class="search-wrap">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input class="search-input" id="searchInput" type="text" placeholder="Buscar documentos, capítulos, temas...">
+      </div>
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="strategy">Estrategia</button>
+      <button class="filter-btn" data-filter="tech">Técnico</button>
+      <button class="filter-btn" data-filter="brand">Marca</button>
+    </div>
+
+    <div id="mainDocs">
+      <p class="section-label">Documentos principales</p>
+      <div class="doc-grid">
+
+        <div class="doc-card" data-tags="strategy brand" style="--accent: #0D2B55;" onclick="sendPrompt('Muéstrame el resumen del documento Master Document de CORE — visión, misión, arquitectura y módulos principales')">
+          <div class="doc-icon" style="--icon-bg: #D8E8F8; --icon-color: #0D2B55;">
+            <i class="ti ti-map" aria-hidden="true"></i>
+          </div>
+          <div class="doc-title">Master Document</div>
+          <div class="doc-desc">Blueprint estratégico, técnico y operativo 2026–2035</div>
+          <div class="doc-footer">
+            <span class="doc-tag" style="--tag-bg: #D8E8F8; --tag-color: #0D2B55;">10 capítulos</span>
+            <span class="doc-version">v1.0</span>
+          </div>
+        </div>
+
+        <div class="doc-card" data-tags="brand strategy" style="--accent: #C9A84C;" onclick="sendPrompt('Muéstrame la estructura y contenido de la landing page de CORE — hero, módulos, secciones y CTAs')">
+          <div class="doc-icon" style="--icon-bg: #FAEEDA; --icon-color: #854F0B;">
+            <i class="ti ti-layout" aria-hidden="true"></i>
+          </div>
+          <div class="doc-title">Landing Page</div>
+          <div class="doc-desc">Estructura y contenido del sitio web público de CORE</div>
+          <div class="doc-footer">
+            <span class="doc-tag" style="--tag-bg: #FAEEDA; --tag-color: #854F0B;">8 secciones</span>
+            <span class="doc-version">v1.0</span>
+          </div>
+        </div>
+
+        <div class="doc-card" data-tags="strategy tech brand" style="--accent: #1A4F9C;" onclick="sendPrompt('Muéstrame los documentos derivados de CORE — Executive Summary, Investor Deck, Technical Spec y Corporate Template')">
+          <div class="doc-icon" style="--icon-bg: #E6F1FB; --icon-color: #185FA5;">
+            <i class="ti ti-files" aria-hidden="true"></i>
+          </div>
+          <div class="doc-title">Derivados CORE</div>
+          <div class="doc-desc">Executive Summary, Investor Deck, Tech Spec, Corporate Template</div>
+          <div class="doc-footer">
+            <span class="doc-tag" style="--tag-bg: #E6F1FB; --tag-color: #185FA5;">4 documentos</span>
+            <span class="doc-version">v1.0</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="chaptersSection">
+      <p class="section-label" style="margin-top: 4px;">Master Document — Capítulos</p>
+      <div class="chapters-section">
+        <div class="chapters-header">
+          <div class="chapters-header-title">
+            <i class="ti ti-book-2" aria-hidden="true"></i>
+            CORE Master Document v1.0
+          </div>
+          <span class="chapters-count">10 capítulos</span>
+        </div>
+
+        <div class="chapter-row" data-tags="strategy" onclick="sendPrompt('Explícame el capítulo 01 de CORE: Visión 2035, Misión, Propósito y Valores')">
+          <span class="chapter-num">01</span>
+          <span class="chapter-name">CORE Vision 2035</span>
+          <span class="chapter-badge badge-strategy">Estrategia</span>
+        </div>
+        <div class="chapter-row" data-tags="tech" onclick="sendPrompt('Explícame la arquitectura técnica de CORE: microservicios, stack, principios y módulos principales')">
+          <span class="chapter-num">02</span>
+          <span class="chapter-name">Technical Architecture</span>
+          <span class="chapter-badge badge-tech">Técnico</span>
+        </div>
+        <div class="chapter-row" data-tags="brand" onclick="sendPrompt('Explícame la arquitectura de marca de CORE: submarcas, mensaje central, tono y posicionamiento')">
+          <span class="chapter-num">03</span>
+          <span class="chapter-name">Brand Architecture</span>
+          <span class="chapter-badge badge-brand">Marca</span>
+        </div>
+        <div class="chapter-row" data-tags="brand" onclick="sendPrompt('Explícame el Design System de CORE: identidad visual, paleta, componentes UI y sistema del globo')">
+          <span class="chapter-num">04</span>
+          <span class="chapter-name">Design System</span>
+          <span class="chapter-badge badge-brand">Marca</span>
+        </div>
+        <div class="chapter-row" data-tags="tech" onclick="sendPrompt('Explícame la arquitectura de información de CORE: estructura de plataforma, roles, permisos y navegación')">
+          <span class="chapter-num">05</span>
+          <span class="chapter-name">Information Architecture</span>
+          <span class="chapter-badge badge-tech">Técnico</span>
+        </div>
+        <div class="chapter-row" data-tags="tech" onclick="sendPrompt('Explícame el modelo de base de datos de CORE: entidades maestras, modelo lógico, físico y escalabilidad')">
+          <span class="chapter-num">06</span>
+          <span class="chapter-name">Database Master Model</span>
+          <span class="chapter-badge badge-data">Datos</span>
+        </div>
+        <div class="chapter-row" data-tags="strategy" onclick="sendPrompt('Explícame la taxonomía de negocio de CORE: productos, operaciones, canales y taxonomía regional')">
+          <span class="chapter-num">07</span>
+          <span class="chapter-name">Business Taxonomy</span>
+          <span class="chapter-badge badge-strategy">Estrategia</span>
+        </div>
+        <div class="chapter-row" data-tags="strategy" onclick="sendPrompt('Explícame el blueprint de expansión global de CORE: países actuales, objetivos, infraestructura y estrategia de entrada')">
+          <span class="chapter-num">08</span>
+          <span class="chapter-name">Global Expansion Blueprint</span>
+          <span class="chapter-badge badge-strategy">Estrategia</span>
+        </div>
+        <div class="chapter-row" data-tags="brand tech" onclick="sendPrompt('Explícame la Globe Experience de CORE: comportamiento del globo, capas, integración con datos reales y funcionalidades futuras')">
+          <span class="chapter-num">09</span>
+          <span class="chapter-name">Globe Experience</span>
+          <span class="chapter-badge badge-brand">Marca</span>
+        </div>
+        <div class="chapter-row" data-tags="strategy" onclick="sendPrompt('Explícame el modelo de monetización de CORE: Logistics, Rep, Market, Intelligence y Finance')">
+          <span class="chapter-num">10</span>
+          <span class="chapter-name">Monetization Model</span>
+          <span class="chapter-badge badge-ops">Operativo</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="derivadosSection" style="margin-top: 4px;">
+      <p class="section-label">Documentos derivados</p>
+      <div class="derivados-grid">
+        <div class="deriv-card" data-tags="strategy" onclick="sendPrompt('Muéstrame el Executive Summary de CORE: oportunidad, qué es CORE, modelo de monetización, ventaja competitiva y roadmap')">
+          <div class="deriv-num">01</div>
+          <div class="deriv-info">
+            <div class="deriv-title">Executive Summary</div>
+            <div class="deriv-sub">Blueprint estratégico 2026–2035</div>
+            <span class="deriv-audience" style="background:#EAF3DE; color:#3B6D11;">CEOs · Directorio</span>
+          </div>
+        </div>
+        <div class="deriv-card" data-tags="strategy" onclick="sendPrompt('Muéstrame el Investor Deck Narrative de CORE: tesis de inversión, TAM, producto, ventajas, expansión y monetización')">
+          <div class="deriv-num">02</div>
+          <div class="deriv-info">
+            <div class="deriv-title">Investor Deck Narrative</div>
+            <div class="deriv-sub">Visión, TAM, modelo y roadmap</div>
+            <span class="deriv-audience" style="background:#D8E8F8; color:#0D2B55;">Inversores · Seed/Serie A</span>
+          </div>
+        </div>
+        <div class="deriv-card" data-tags="tech" onclick="sendPrompt('Muéstrame la Technical Specification de CORE: arquitectura, APIs, base de datos, eventos, seguridad e integraciones')">
+          <div class="deriv-num">03</div>
+          <div class="deriv-info">
+            <div class="deriv-title">Technical Specification</div>
+            <div class="deriv-sub">Arquitectura, APIs e infraestructura</div>
+            <span class="deriv-audience" style="background:#E6F1FB; color:#185FA5;">Engineering · Arquitectura</span>
+          </div>
+        </div>
+        <div class="deriv-card" data-tags="brand" onclick="sendPrompt('Muéstrame el Corporate Document Template de CORE: tipografía, paleta de colores, estilos de encabezado, tabla y checklist corporativo')">
+          <div class="deriv-num">04</div>
+          <div class="deriv-info">
+            <div class="deriv-title">Corporate Template</div>
+            <div class="deriv-sub">Guía de estilos y estructura</div>
+            <span class="deriv-audience" style="background:#EEEDFE; color:#534AB7;">Toda la organización</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  let activeFilter = 'all';
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener('input', applyFilters);
+
+  function applyFilters() {
+    const q = searchInput.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.doc-card, .chapter-row, .deriv-card');
+
+    cards.forEach(card => {
+      const tags = (card.dataset.tags || '').toLowerCase();
+      const text = card.textContent.toLowerCase();
+      const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
+      const matchesSearch = !q || text.includes(q);
+      card.classList.toggle('hidden', !(matchesFilter && matchesSearch));
+    });
+  }
+</script>

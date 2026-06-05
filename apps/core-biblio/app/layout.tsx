@@ -1,56 +1,40 @@
-import './globals.css';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import type { Metadata } from 'next'
+import { Inter, JetBrains_Mono } from 'next/font/google'
+import './globals.css'
+import Sidebar from './components/Sidebar'
 
-export const metadata = {
-  title: 'CORE Biblio',
-  description: 'Developer Hub del ecosistema CORE',
-};
+const inter = Inter({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
-function NavLink({ href, children }) {
-  const pathname = usePathname();
-  const active = pathname === href;
+const jetbrainsMono = JetBrains_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
-  return (
-    <Link
-      href={href}
-      className={
-        "px-2 py-1 rounded transition-colors " +
-        (active
-          ? "text-white bg-neutral-800"
-          : "text-neutral-400 hover:text-white hover:bg-neutral-900")
-      }
-    >
-      {children}
-    </Link>
-  );
+export const metadata: Metadata = {
+  title: 'Biblioteca CORE',
+  description: 'Documentación oficial del ecosistema CORE — Blueprint Estratégico 2026–2035',
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="es">
-      <body className="flex min-h-screen bg-neutral-950 text-neutral-200">
-
-        {/* Sidebar */}
-        <aside className="w-64 border-r border-neutral-800 p-6 flex flex-col gap-6">
-          <h1 className="text-xl font-bold tracking-tight">CORE Biblio</h1>
-
-          <nav className="flex flex-col gap-2">
-            <NavLink href="/">Inicio</NavLink>
-            <NavLink href="/docs">Documentación</NavLink>
-            <NavLink href="/architecture">Arquitectura</NavLink>
-            <NavLink href="/prompts">Prompts</NavLink>
-            <NavLink href="/roadmap">Roadmap</NavLink>
-            <NavLink href="/maintenance">Mantenimiento</NavLink>
-          </nav>
-        </aside>
-
-        {/* Contenido */}
-        <main className="flex-1 p-10">
-          {children}
-        </main>
-
+    <html lang="es" className="dark">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className="flex-1 ml-[260px] min-h-screen">
+            <div className="max-w-4xl mx-auto px-8 py-10">
+              {children}
+            </div>
+          </main>
+        </div>
       </body>
     </html>
-  );
+  )
 }

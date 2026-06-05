@@ -33,43 +33,43 @@ export interface CoreGlobeProps {
 
 // ─── Default data ─────────────────────────────────────────────────────────────
 export const DEFAULT_HUBS: Hub[] = [
-  { id:"uy", name:"Uruguay",          role:"HQ · Hub principal",    lat:-33,   lng:-56,   r:7, color:"#F5C26B", layer:"cono",     primary:true },
-  { id:"ar", name:"Buenos Aires",     role:"Distribución Cono Sur", lat:-34.6, lng:-58.4, r:4, color:"#0EA5E9", layer:"cono"      },
-  { id:"br", name:"São Paulo",        role:"Distribución Cono Sur", lat:-23.5, lng:-46.6, r:4, color:"#0EA5E9", layer:"cono"      },
-  { id:"cl", name:"Santiago",         role:"Distribución Cono Sur", lat:-33.4, lng:-70.7, r:4, color:"#0EA5E9", layer:"cono"      },
-  { id:"py", name:"Asunción",         role:"Distribución Cono Sur", lat:-25.3, lng:-57.6, r:3, color:"#0EA5E9", layer:"cono"      },
-  { id:"cn", name:"Shanghai",         role:"Origen · China",        lat:31.2,  lng:121.5, r:4, color:"#00E5FF", layer:"origins"   },
-  { id:"sg", name:"Singapur",         role:"Origen · Asia SE",      lat:1.3,   lng:103.8, r:3, color:"#A78BFA", layer:"origins"   },
-  { id:"in", name:"Mumbai",           role:"Origen · India",        lat:19.1,  lng:72.9,  r:3, color:"#A78BFA", layer:"origins"   },
-  { id:"tr", name:"Turquía",          role:"Origen especial",       lat:39.9,  lng:32.9,  r:3, color:"#A78BFA", layer:"origins"   },
-  { id:"nl", name:"Rotterdam",        role:"Origen · Europa",       lat:51.9,  lng:4.5,   r:4, color:"#00E5FF", layer:"origins"   },
-  { id:"es", name:"Barcelona",        role:"Origen · España",       lat:41.4,  lng:2.2,   r:3, color:"#00E5FF", layer:"origins"   },
-  { id:"us", name:"Nueva York",       role:"Origen · EE.UU.",       lat:40.7,  lng:-74,   r:4, color:"#00E5FF", layer:"origins"   },
-  { id:"mx", name:"Ciudad de México", role:"Expansión 2029",        lat:19.4,  lng:-99.1, r:3, color:"#FF8A4C", layer:"expansion" },
-  { id:"pe", name:"Lima",             role:"Expansión 2027",        lat:-12,   lng:-77,   r:3, color:"#FF8A4C", layer:"expansion" },
-  { id:"co", name:"Bogotá",           role:"Expansión 2028",        lat:4.7,   lng:-74.1, r:3, color:"#FF8A4C", layer:"expansion" },
-  { id:"bo", name:"Santa Cruz",       role:"Expansión 2027",        lat:-17.8, lng:-63.2, r:3, color:"#FF8A4C", layer:"expansion" },
+  { id:"uy", name:"Uruguay",          role:"Hub principal · CORE",  lat:-33,   lng:-56,   r:7, color:"#FFFFFF", layer:"cono",     primary:true },
+  { id:"ar", name:"Buenos Aires",     role:"Distribución Cono Sur", lat:-34.6, lng:-58.4, r:4, color:"#4A90E8", layer:"cono"      },
+  { id:"br", name:"São Paulo",        role:"Distribución Cono Sur", lat:-23.5, lng:-46.6, r:4, color:"#4A90E8", layer:"cono"      },
+  { id:"cl", name:"Santiago",         role:"Distribución Cono Sur", lat:-33.4, lng:-70.7, r:4, color:"#4A90E8", layer:"cono"      },
+  { id:"py", name:"Asunción",         role:"Distribución Cono Sur", lat:-25.3, lng:-57.6, r:3, color:"#4A90E8", layer:"cono"      },
+  { id:"cn", name:"Shanghai",         role:"Origen · China",        lat:31.2,  lng:121.5, r:4, color:"#9B9B9B", layer:"origins"   },
+  { id:"sg", name:"Singapur",         role:"Origen · Asia SE",      lat:1.3,   lng:103.8, r:3, color:"#9B9B9B", layer:"origins"   },
+  { id:"in", name:"Mumbai",           role:"Origen · India",        lat:19.1,  lng:72.9,  r:3, color:"#9B9B9B", layer:"origins"   },
+  { id:"tr", name:"Turquía",          role:"Origen especial",       lat:39.9,  lng:32.9,  r:3, color:"#9B9B9B", layer:"origins"   },
+  { id:"nl", name:"Rotterdam",        role:"Origen · Europa",       lat:51.9,  lng:4.5,   r:4, color:"#9B9B9B", layer:"origins"   },
+  { id:"es", name:"Barcelona",        role:"Origen · España",       lat:41.4,  lng:2.2,   r:3, color:"#9B9B9B", layer:"origins"   },
+  { id:"us", name:"Nueva York",       role:"Origen · EE.UU.",       lat:40.7,  lng:-74,   r:4, color:"#9B9B9B", layer:"origins"   },
+  { id:"mx", name:"Ciudad de México", role:"Expansión 2029",        lat:19.4,  lng:-99.1, r:3, color:"#5A5A5A", layer:"expansion" },
+  { id:"pe", name:"Lima",             role:"Expansión 2027",        lat:-12,   lng:-77,   r:3, color:"#5A5A5A", layer:"expansion" },
+  { id:"co", name:"Bogotá",           role:"Expansión 2028",        lat:4.7,   lng:-74.1, r:3, color:"#5A5A5A", layer:"expansion" },
+  { id:"bo", name:"Santa Cruz",       role:"Expansión 2027",        lat:-17.8, lng:-63.2, r:3, color:"#5A5A5A", layer:"expansion" },
 ];
 
 export const DEFAULT_ROUTES: Route[] = [
-  { from:"cn", to:"uy", color:"#00E5FF", width:1.8, speed:0.004,  layer:"origins",   glow:true   },
-  { from:"nl", to:"uy", color:"#00E5FF", width:1.8, speed:0.0035, layer:"origins",   glow:true   },
-  { from:"us", to:"uy", color:"#00E5FF", width:1.8, speed:0.005,  layer:"origins",   glow:true   },
-  { from:"es", to:"uy", color:"#00E5FF", width:1.4, speed:0.0038, layer:"origins",   glow:true   },
-  { from:"sg", to:"uy", color:"#A78BFA", width:1.4, speed:0.003,  layer:"origins"               },
-  { from:"in", to:"uy", color:"#A78BFA", width:1.4, speed:0.003,  layer:"origins"               },
-  { from:"tr", to:"uy", color:"#A78BFA", width:1.2, speed:0.0033, layer:"origins"               },
-  { from:"uy", to:"ar", color:"#0EA5E9", width:1.5, speed:0.007,  layer:"cono"                  },
-  { from:"uy", to:"br", color:"#0EA5E9", width:1.5, speed:0.006,  layer:"cono"                  },
-  { from:"uy", to:"cl", color:"#0EA5E9", width:1.4, speed:0.007,  layer:"cono"                  },
-  { from:"uy", to:"py", color:"#0EA5E9", width:1.2, speed:0.008,  layer:"cono"                  },
-  { from:"cn", to:"br", color:"#F5C26B", width:2.2, speed:0.0045, layer:"direct",    glow:true   },
-  { from:"us", to:"ar", color:"#F5C26B", width:2.0, speed:0.005,  layer:"direct",    glow:true   },
-  { from:"nl", to:"cl", color:"#F5C26B", width:1.8, speed:0.0042, layer:"direct",    glow:true   },
-  { from:"uy", to:"pe", color:"#FF8A4C", width:1.2, speed:0.005,  layer:"expansion", dashed:true },
-  { from:"uy", to:"co", color:"#FF8A4C", width:1.2, speed:0.005,  layer:"expansion", dashed:true },
-  { from:"uy", to:"mx", color:"#FF8A4C", width:1.2, speed:0.004,  layer:"expansion", dashed:true },
-  { from:"uy", to:"bo", color:"#FF8A4C", width:1.0, speed:0.006,  layer:"expansion", dashed:true },
+  { from:"cn", to:"uy", color:"#FFFFFF", width:1.5, speed:0.004,  layer:"origins",   glow:true   },
+  { from:"nl", to:"uy", color:"#FFFFFF", width:1.5, speed:0.0035, layer:"origins",   glow:true   },
+  { from:"us", to:"uy", color:"#FFFFFF", width:1.5, speed:0.005,  layer:"origins",   glow:true   },
+  { from:"es", to:"uy", color:"#FFFFFF", width:1.2, speed:0.0038, layer:"origins",   glow:true   },
+  { from:"sg", to:"uy", color:"#9B9B9B", width:1.0, speed:0.003,  layer:"origins"               },
+  { from:"in", to:"uy", color:"#9B9B9B", width:1.0, speed:0.003,  layer:"origins"               },
+  { from:"tr", to:"uy", color:"#9B9B9B", width:0.9, speed:0.0033, layer:"origins"               },
+  { from:"uy", to:"ar", color:"#4A90E8", width:1.4, speed:0.007,  layer:"cono"                  },
+  { from:"uy", to:"br", color:"#4A90E8", width:1.4, speed:0.006,  layer:"cono"                  },
+  { from:"uy", to:"cl", color:"#4A90E8", width:1.2, speed:0.007,  layer:"cono"                  },
+  { from:"uy", to:"py", color:"#4A90E8", width:1.0, speed:0.008,  layer:"cono"                  },
+  { from:"cn", to:"br", color:"#FFFFFF", width:1.8, speed:0.0045, layer:"direct",    glow:true   },
+  { from:"us", to:"ar", color:"#FFFFFF", width:1.6, speed:0.005,  layer:"direct",    glow:true   },
+  { from:"nl", to:"cl", color:"#FFFFFF", width:1.5, speed:0.0042, layer:"direct",    glow:true   },
+  { from:"uy", to:"pe", color:"#5A5A5A", width:1.0, speed:0.005,  layer:"expansion", dashed:true },
+  { from:"uy", to:"co", color:"#5A5A5A", width:1.0, speed:0.005,  layer:"expansion", dashed:true },
+  { from:"uy", to:"mx", color:"#5A5A5A", width:1.0, speed:0.004,  layer:"expansion", dashed:true },
+  { from:"uy", to:"bo", color:"#5A5A5A", width:0.8, speed:0.006,  layer:"expansion", dashed:true },
 ];
 
 // ─── Math helpers ─────────────────────────────────────────────────────────────
@@ -195,9 +195,9 @@ export function CoreGlobe({
 
     function drawLand() {
       const { x: rX, y: rY } = rotRef.current;
-      ctx.fillStyle   = "#1a3a5c";
-      ctx.strokeStyle = "rgba(0,180,220,0.25)";
-      ctx.lineWidth   = 0.4;
+      ctx.fillStyle   = "#1C2333";
+      ctx.strokeStyle = "rgba(255,255,255,0.10)";
+      ctx.lineWidth   = 0.3;
 
       for (const poly of geoRef.current) {
         for (const ring of poly) {
@@ -218,7 +218,7 @@ export function CoreGlobe({
 
     function drawGraticule() {
       const { x: rX, y: rY } = rotRef.current;
-      ctx.strokeStyle = "rgba(0,160,220,0.07)";
+      ctx.strokeStyle = "rgba(255,255,255,0.04)";
       ctx.lineWidth   = 0.4;
       function drawSegs(pts: Pt[]) {
         if (pts.length < 2) return;
@@ -301,26 +301,30 @@ export function CoreGlobe({
         }
       }
       ctx.save();
-      ctx.shadowColor = hub.color; ctx.shadowBlur = hovered ? 22 : 12;
-      ctx.strokeStyle = hub.color; ctx.lineWidth = 1; ctx.globalAlpha = 0.65;
+      ctx.shadowColor = hub.primary ? "rgba(255,255,255,0.6)" : hub.color;
+      ctx.shadowBlur = hovered ? 20 : 10;
+      ctx.strokeStyle = hub.primary ? "rgba(255,255,255,0.4)" : hub.color;
+      ctx.lineWidth = 0.8; ctx.globalAlpha = 0.6;
       ctx.beginPath(); ctx.arc(p.sx, p.sy, r+3, 0, Math.PI*2); ctx.stroke();
       ctx.globalAlpha = 1;
-      ctx.fillStyle = hub.primary ? "#FFF" : hub.color;
+      ctx.fillStyle = hub.primary ? "#FFFFFF" : hub.color;
       ctx.beginPath(); ctx.arc(p.sx, p.sy, r, 0, Math.PI*2); ctx.fill();
       if (hub.primary) {
-        ctx.fillStyle = "#F5C26B";
+        ctx.fillStyle = "rgba(255,255,255,0.25)";
         ctx.beginPath(); ctx.arc(p.sx, p.sy, r*0.45, 0, Math.PI*2); ctx.fill();
       }
       ctx.restore();
       if (hub.primary || hovered || highlighted) {
         ctx.save();
-        ctx.font = `${hub.primary?500:400} ${hub.primary?12:11}px -apple-system,sans-serif`;
-        ctx.fillStyle = hub.color; ctx.globalAlpha = 0.95; ctx.textAlign = "left";
+        ctx.font = `${hub.primary?400:300} ${hub.primary?11:10}px -apple-system,sans-serif`;
+        ctx.fillStyle = hub.primary ? "#FFFFFF" : hub.color;
+        ctx.globalAlpha = 0.9; ctx.textAlign = "left";
         ctx.fillText(hub.name, p.sx+r+6, p.sy+4);
         if (hub.primary) {
           ctx.font = "400 9px -apple-system,sans-serif";
-          ctx.fillStyle = "rgba(255,255,255,0.45)";
-          ctx.fillText("COMMERCIAL HUB", p.sx+r+6, p.sy+16);
+          ctx.fillStyle = "rgba(255,255,255,0.35)";
+          ctx.letterSpacing = "0.08em";
+          ctx.fillText("HUB · CORE", p.sx+r+6, p.sy+16);
         }
         ctx.restore();
       }
@@ -331,7 +335,7 @@ export function CoreGlobe({
       ctx.clearRect(0, 0, W, H);
       // background
       const bg = ctx.createRadialGradient(cx,cy,R*0.3,cx,cy,R*1.6);
-      bg.addColorStop(0,"#0D1B38"); bg.addColorStop(0.5,"#070F1E"); bg.addColorStop(1,"#030810");
+      bg.addColorStop(0,"#0D1018"); bg.addColorStop(0.5,"#080B10"); bg.addColorStop(1,"#040508");
       ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
       // stars
       for (let i = 0; i < 140; i++) {
@@ -344,9 +348,9 @@ export function CoreGlobe({
       ctx.globalAlpha = 1;
       // globe glow ring
       ctx.save();
-      ctx.strokeStyle = "rgba(0,229,255,0.28)"; ctx.lineWidth = 1.8;
+      ctx.strokeStyle = "rgba(255,255,255,0.12)"; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
-      ctx.strokeStyle = "rgba(0,229,255,0.06)"; ctx.lineWidth = 14;
+      ctx.strokeStyle = "rgba(255,255,255,0.03)"; ctx.lineWidth = 12;
       ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
       ctx.restore();
       // clip
@@ -354,7 +358,7 @@ export function CoreGlobe({
       ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.clip();
       // ocean
       const fill = ctx.createRadialGradient(cx-R*0.25,cy-R*0.2,0,cx,cy,R);
-      fill.addColorStop(0,"#122554"); fill.addColorStop(0.5,"#0D1B38"); fill.addColorStop(1,"#07101E");
+      fill.addColorStop(0,"#151B28"); fill.addColorStop(0.5,"#0E1320"); fill.addColorStop(1,"#080C14");
       ctx.fillStyle = fill; ctx.fillRect(cx-R,cy-R,R*2,R*2);
       // land
       drawLand();
@@ -428,16 +432,16 @@ export function CoreGlobe({
   const onTouchMove  = useCallback((e: React.TouchEvent) => { const t=e.touches[0]; const dx=t.clientX-dragRef.current.lastX,dy=t.clientY-dragRef.current.lastY; rotRef.current.vy=dx*0.008; rotRef.current.vx=dy*0.008; rotRef.current.y+=rotRef.current.vy; rotRef.current.x+=rotRef.current.vx; dragRef.current.lastX=t.clientX; dragRef.current.lastY=t.clientY; }, []);
 
   return (
-    <div ref={wrapRef} className={`relative overflow-hidden rounded-2xl select-none ${className}`} style={{background:"#07101F"}}>
+    <div ref={wrapRef} className={`relative overflow-hidden select-none ${className}`} style={{background:"#0A0A0A"}}>
       <canvas ref={canvasRef} style={{display:"block",width:"100%",cursor:"grab"}}
         onMouseDown={onMouseDown} onMouseUp={onMouseUp} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}
         onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
       />
       {tooltip && (
-        <div className="pointer-events-none absolute z-10 rounded-lg px-3 py-2 text-xs"
-          style={{left:tooltip.x,top:tooltip.y,background:"rgba(5,15,35,0.92)",border:"0.5px solid rgba(0,229,255,0.3)",backdropFilter:"blur(8px)",maxWidth:180}}>
-          <p className="mb-0.5 font-medium" style={{color:"#00E5FF"}}>{tooltip.hub.name}</p>
-          <p style={{color:"rgba(255,255,255,0.55)"}}>{tooltip.hub.role}</p>
+        <div className="pointer-events-none absolute z-10 px-3 py-2 text-xs"
+          style={{left:tooltip.x,top:tooltip.y,background:"rgba(10,10,10,0.95)",border:"0.5px solid rgba(255,255,255,0.15)",backdropFilter:"blur(8px)",maxWidth:180}}>
+          <p className="mb-0.5 font-medium" style={{color:"#FFFFFF"}}>{tooltip.hub.name}</p>
+          <p style={{color:"rgba(255,255,255,0.4)"}}>{tooltip.hub.role}</p>
         </div>
       )}
     </div>

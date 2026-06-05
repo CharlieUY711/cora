@@ -122,7 +122,7 @@ function Hero() {
         </div>
         {/* Globe */}
         <div className="relative flex items-center justify-center">
-          <CoreGlobe className="w-full max-w-[520px]" autoRotate highlightCountry="uy" />
+          <CoreGlobe className="w-full max-w-[520px]" autoRotate={false} highlightCountry="uy" />
         </div>
       </div>
     </section>
