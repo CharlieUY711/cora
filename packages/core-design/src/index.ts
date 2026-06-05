@@ -1,28 +1,12 @@
-// ═══════════════════════════════════════════════════════════
-// @core/design — Entry Point
-// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// @core/design — Public API
+// Importar desde aquí en todas las apps:
+//   import { tokens, brand } from '@core/design'
+//   import '@core/design/globals'  (en globals.css de cada app)
+// ═══════════════════════════════════════════════════════════════
 
-export { tokens } from './tokens';
-export { defaultTheme } from './themes/default';
-export { secondHandTheme } from './themes/second-hand';
+export { tokens, colors, typography, spacing, radius, shadows, motion, breakpoints, layout, components } from './tokens/tokens'
+export type { Tokens } from './tokens/tokens'
 
-export type { Tokens } from './tokens';
-export type { DefaultTheme } from './themes/default';
-export type { SecondHandTheme } from './themes/second-hand';
-
-// CSS Variables helper
-export const toCSSVars = (theme: Record<string, any>, prefix = '--core'): string => {
-  const vars: string[] = [];
-  const flatten = (obj: Record<string, any>, path: string) => {
-    for (const [key, value] of Object.entries(obj)) {
-      const varName = `${path}-${key}`;
-      if (typeof value === 'string' || typeof value === 'number') {
-        vars.push(`${varName}: ${value};`);
-      } else if (typeof value === 'object') {
-        flatten(value, varName);
-      }
-    }
-  };
-  flatten(theme.colors, `${prefix}-color`);
-  return `:root {\n  ${vars.join('\n  ')}\n}`;
-};
+export { brand } from './themes/brand'
+export type { Brand } from './themes/brand'

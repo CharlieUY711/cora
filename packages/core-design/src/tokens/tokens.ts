@@ -1,80 +1,97 @@
-// ═══════════════════════════════════════════════════════════
-// CORE Design System — Base Tokens
+// ═══════════════════════════════════════════════════════════════
+// CORE Design System — Base Tokens v1.1
 // Fuente de verdad para todo el ecosistema CORE
-// ═══════════════════════════════════════════════════════════
+// Ninguna app debe definir colores, tipografías o espaciados propios.
+// ═══════════════════════════════════════════════════════════════
 
-// ── COLORES CORE ────────────────────────────────────────────
+// ── COLORES CORE ─────────────────────────────────────────────
 export const colors = {
-  // Neutros
+
+  // ── Brand primario — Navy
+  navy:        '#1B3A6B',   // identidad principal, favicon
+  navyDark:    '#0D2B55',   // navbar, headers oscuros
+  navyDeep:    '#091E3A',   // fondos muy oscuros
+  navyLight:   '#1A3F6F',   // hover sobre navy
+  blue:        '#1A4F9C',   // links, CTAs
+  blueLight:   '#2E6FC4',   // hover sobre blue
+  bluePale:    '#D8E8F8',   // fondos info
+
+  // ── Brand secundario — Gold
+  gold:        '#C9A84C',   // acento principal, badges, highlights
+  goldLight:   '#DDB96A',   // hover sobre gold
+  goldDark:    '#A8893A',   // gold sobre fondo claro
+  goldPale:    'rgba(201,168,76,0.12)', // fondos con tinte gold
+
+  // ── Neutros
   white:       '#FFFFFF',
   black:       '#000000',
-
-  // Navy / Blue palette
-  navy:        '#0D2B55',
-  navyDark:    '#091E3A',
-  navyLight:   '#1A3F6F',
-  blue:        '#1A4F9C',
-  blueLight:   '#2E6FC4',
-  bluePale:    '#D8E8F8',
-
-  // Gold
-  gold:        '#C9A84C',
-  goldLight:   '#DDB96A',
-  goldDark:    '#A8893A',
-
-  // Grays
-  grayBody:    '#4A4A4A',
-  grayMid:     '#7A7A7A',
+  grayFaint:   '#F8FAFC',
   grayLight:   '#F2F5FA',
   grayBorder:  '#C8D5E8',
-  grayFaint:   '#F8FAFC',
+  grayMid:     '#7A7A7A',
+  grayBody:    '#4A4A4A',
+  grayDark:    '#1A1A1A',
 
-  // States
-  red:         '#C0392B',
-  redLight:    '#FADBD8',
-  green:       '#1D9E75',
-  greenLight:  '#E8F7F2',
-  amber:       '#F39C12',
-  amberLight:  '#FEF9E7',
-
-  // Second Hand
-  sh: {
-    primary:     '#1D9E75',
-    primaryHover:'#16845F',
-    soft:        '#4ECBA0',
-    dark:        '#0D6B4E',
-    badge:       '#1D9E75',
-    background:  '#EEF7F2',
-    pale:        '#F0FAF6',
-    border:      '#A8DCC8',
+  // ── Dark mode base (Biblioteca, Foundation, Hub)
+  dark: {
+    bg:        '#0a0a0a',
+    bg2:       '#111111',
+    bg3:       '#161616',
+    border:    '#1f1f1f',
+    border2:   '#2a2a2a',
+    text:      '#e5e5e5',
+    text2:     '#888888',
+    text3:     '#555555',
   },
-} as const;
 
-// ── TIPOGRAFÍAS ─────────────────────────────────────────────
+  // ── Semánticos
+  success:     '#1D9E75',
+  successLight:'#E8F7F2',
+  warning:     '#F39C12',
+  warningLight:'#FEF9E7',
+  danger:      '#C0392B',
+  dangerLight: '#FADBD8',
+  info:        '#2E6FC4',
+  infoLight:   '#D8E8F8',
+
+  // ── Second Hand (submarca)
+  secondHand: {
+    primary:      '#1D9E75',
+    primaryHover: '#16845F',
+    soft:         '#4ECBA0',
+    dark:         '#0D6B4E',
+    bg:           '#EEF7F2',
+    pale:         '#F0FAF6',
+    border:       '#A8DCC8',
+  },
+
+} as const
+
+// ── TIPOGRAFÍA ────────────────────────────────────────────────
 export const typography = {
   family: {
-    base:  "Calibri, 'Segoe UI', system-ui, sans-serif",
-    mono:  "'Courier New', 'Consolas', monospace",
+    base:    "Calibri, 'Segoe UI', system-ui, sans-serif",
+    mono:    "'Courier New', 'Consolas', monospace",
     display: "'Bebas Neue', sans-serif",
-    code:  "'JetBrains Mono', 'Fira Code', monospace",
+    code:    "'JetBrains Mono', 'Fira Code', monospace",
   },
   weight: {
-    regular: 400,
-    medium:  500,
+    regular:  400,
+    medium:   500,
     semibold: 600,
-    bold:    700,
-    black:   800,
+    bold:     700,
+    black:    800,
   },
   size: {
-    xs:   '0.6rem',
-    sm:   '0.75rem',
-    base: '1rem',
-    md:   '0.875rem',
-    lg:   '1.125rem',
-    xl:   '1.25rem',
-    '2xl':'1.5rem',
-    '3xl':'2rem',
-    '4xl':'3rem',
+    xs:      '0.6rem',
+    sm:      '0.75rem',
+    md:      '0.875rem',
+    base:    '1rem',
+    lg:      '1.125rem',
+    xl:      '1.25rem',
+    '2xl':   '1.5rem',
+    '3xl':   '2rem',
+    '4xl':   '3rem',
     display: '4rem',
   },
   lineHeight: {
@@ -85,15 +102,15 @@ export const typography = {
     loose:   1.8,
   },
   letterSpacing: {
-    tight:  '-0.02em',
+    tight:   '-0.02em',
     normal:  '0',
-    wide:   '0.05em',
-    wider:  '0.08em',
-    widest: '0.15em',
+    wide:    '0.05em',
+    wider:   '0.08em',
+    widest:  '0.15em',
   },
-} as const;
+} as const
 
-// ── ESPACIADO ────────────────────────────────────────────────
+// ── ESPACIADO (base 4px) ──────────────────────────────────────
 export const spacing = {
   0:  '0',
   1:  '4px',
@@ -109,9 +126,9 @@ export const spacing = {
   16: '64px',
   20: '80px',
   24: '96px',
-} as const;
+} as const
 
-// ── RADIOS ───────────────────────────────────────────────────
+// ── RADIOS ────────────────────────────────────────────────────
 export const radius = {
   none:   '0',
   sm:     '4px',
@@ -121,20 +138,19 @@ export const radius = {
   '2xl':  '24px',
   pill:   '9999px',
   circle: '50%',
-} as const;
+} as const
 
-// ── SOMBRAS ──────────────────────────────────────────────────
+// ── SOMBRAS ───────────────────────────────────────────────────
 export const shadows = {
   none:   'none',
   soft:   '0 2px 8px rgba(13,43,85,.08), 0 1px 3px rgba(13,43,85,.04)',
   medium: '0 4px 16px rgba(13,43,85,.12), 0 2px 6px rgba(13,43,85,.06)',
   strong: '0 8px 28px rgba(13,43,85,.16), 0 4px 10px rgba(13,43,85,.08)',
   card:   '0 2px 8px rgba(13,43,85,.08)',
-  navbar: '0 1px 0 rgba(255,255,255,.1)',
   focus:  '0 0 0 3px rgba(46,111,196,.3)',
-} as const;
+} as const
 
-// ── MOTION ───────────────────────────────────────────────────
+// ── MOTION ────────────────────────────────────────────────────
 export const motion = {
   duration: {
     instant:  '0ms',
@@ -144,94 +160,71 @@ export const motion = {
     verySlow: '600ms',
   },
   easing: {
-    default:  'ease-in-out',
-    in:       'ease-in',
-    out:      'ease-out',
-    spring:   'cubic-bezier(0.34, 1.56, 0.64, 1)',
-    linear:   'linear',
+    default: 'ease-in-out',
+    in:      'ease-in',
+    out:     'ease-out',
+    spring:  'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    linear:  'linear',
   },
   transition: {
     fast:   'all 150ms ease-in-out',
     normal: 'all 200ms ease-in-out',
     slow:   'all 300ms ease-in-out',
     color:  'color 200ms ease-in-out, background-color 200ms ease-in-out',
-    nav:    'background 400ms ease',
   },
-} as const;
+} as const
+
+// ── BREAKPOINTS ───────────────────────────────────────────────
+export const breakpoints = {
+  sm:   '640px',
+  md:   '768px',
+  lg:   '1024px',
+  xl:   '1280px',
+  '2xl':'1536px',
+} as const
+
+// ── LAYOUT ────────────────────────────────────────────────────
+export const layout = {
+  maxWidth:     '1400px',
+  sidebarWidth: '220px',
+  navbarHeight: '48px',
+  paddingX:     spacing[8],
+} as const
 
 // ── COMPONENT TOKENS ─────────────────────────────────────────
 export const components = {
   button: {
-    height:       '32px',
-    heightSm:     '28px',
-    heightLg:     '40px',
-    minWidth:     '120px',
-    paddingX:     spacing[4],
-    paddingXSm:   spacing[3],
-    fontSize:     typography.size.sm,
-    fontWeight:   typography.weight.bold,
-    letterSpacing:typography.letterSpacing.wide,
-    radius:       radius.sm,
-    transition:   motion.transition.normal,
+    height:        '32px',
+    heightSm:      '28px',
+    heightLg:      '40px',
+    paddingX:      spacing[4],
+    fontSize:      typography.size.sm,
+    fontWeight:    typography.weight.bold,
+    letterSpacing: typography.letterSpacing.wide,
+    radius:        radius.sm,
+    transition:    motion.transition.normal,
   },
   card: {
-    bg:           colors.white,
-    border:       colors.grayBorder,
-    radius:       radius.md,
-    shadow:       shadows.card,
-    padding:      spacing[4],
-    paddingLg:    spacing[6],
+    bg:        colors.white,
+    border:    colors.grayBorder,
+    radius:    radius.md,
+    shadow:    shadows.card,
+    padding:   spacing[4],
+    paddingLg: spacing[6],
   },
   input: {
-    height:       '32px',
-    bg:           'rgba(255,255,255,.15)',
-    bgFocus:      'rgba(255,255,255,.22)',
-    border:       'none',
-    radius:       radius.sm,
-    fontSize:     typography.size.md,
-    color:        colors.white,
-    placeholder:  'rgba(255,255,255,.5)',
-  },
-  modal: {
-    overlay:      'rgba(13,43,85,.7)',
-    bg:           colors.white,
-    border:       colors.blueLight,
-    radius:       radius.lg,
-    shadow:       shadows.strong,
-  },
-  tooltip: {
-    bg:           colors.navy,
-    color:        colors.white,
-    radius:       radius.sm,
-    fontSize:     typography.size.sm,
-    padding:      `${spacing[1]} ${spacing[3]}`,
+    height:  '36px',
+    radius:  radius.sm,
+    fontSize:typography.size.md,
   },
   navbar: {
-    height:       '48px',
-    bgMarket:     colors.navy,
-    bgSecondHand: colors.sh.primary,
-    gap:          spacing[4],
-    padding:      `${spacing[2]} ${spacing[8]}`,
-    maxWidth:     '1400px',
+    height:   '48px',
+    bgDark:   colors.navyDark,
+    bgLight:  colors.white,
   },
-  layout: {
-    maxWidth:     '1400px',
-    paddingX:     spacing[8],
-    paddingTop:   spacing[20],
-    sidebarWidth: '240px',
-  },
-} as const;
+} as const
 
-// ── BREAKPOINTS ──────────────────────────────────────────────
-export const breakpoints = {
-  sm:  '640px',
-  md:  '768px',
-  lg:  '1024px',
-  xl:  '1280px',
-  '2xl': '1536px',
-} as const;
-
-// ── EXPORT PRINCIPAL ─────────────────────────────────────────
+// ── EXPORT PRINCIPAL ──────────────────────────────────────────
 export const tokens = {
   colors,
   typography,
@@ -239,8 +232,9 @@ export const tokens = {
   radius,
   shadows,
   motion,
-  components,
   breakpoints,
-} as const;
+  layout,
+  components,
+} as const
 
-export type Tokens = typeof tokens;
+export type Tokens = typeof tokens
