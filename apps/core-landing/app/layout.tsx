@@ -1,5 +1,8 @@
+import { getCoreStyle } from '@/lib/core-theme'
 import type { Metadata } from "next";
+import { getCoreStyle } from '@/lib/core-theme'
 import { Geist, Geist_Mono } from "next/font/google";
+import { getCoreStyle } from '@/lib/core-theme'
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,16 +37,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const style = await getCoreStyle()
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+     style={style?.vars as React.CSSProperties | undefined}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
