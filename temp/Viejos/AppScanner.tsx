@@ -1,19 +1,8 @@
 'use client'
 import { useState, useCallback } from 'react'
 
-type Checks = {
-  package_json: boolean
-  tsconfig: boolean
-  env_local: boolean
-  middleware: boolean
-  vercel_json: boolean
-  framework: boolean
-  supabase: boolean
-  registered: boolean
-  vercel_linked: boolean
-  palette: boolean
-  design: boolean
-}
+type CheckStatus = 'pass' | 'fail' | 'na'
+type CheckItem = { key: string; label: string; status: CheckStatus }
 
 type RepoResult = {
   name: string
@@ -21,7 +10,7 @@ type RepoResult = {
   branch: string
   updated_at: string
   framework: string
-  checks: Checks
+  checks: CheckItem[]
   score: number
   registered_as: { id: string; name: string } | null
 }
@@ -34,18 +23,11 @@ type Survey = {
   suggested_supabase_project_id: string | null
 }
 
-const CHECK_LABELS: Record<keyof Checks, string> = {
-  package_json: 'package.json',
-  tsconfig: 'tsconfig',
-  env_local: '.env.local',
-  middleware: 'middleware',
-  vercel_json: 'vercel.json',
-  framework: 'framework',
-  supabase: 'supabase',
-  registered: 'registrada',
-  vercel_linked: 'vercel',
-  palette: 'paleta',
-  design: 'diseño',
+type DpItem = { key: string; label: string; present: boolean; files: string[] }
+type DpResult = {
+  uses_shared_auth: boolean
+  items: DpItem[]
+  total_files: number
 }
 
 const FRAMEWORK_LABEL: Record<string, string> = {
@@ -72,6 +54,10 @@ export default function AppScanner() {
   // relevamiento de env por repo
   const [surveys, setSurveys] = useState<Record<string, Survey>>({})
   const [surveying, setSurveying] = useState<string | null>(null)
+
+  // análisis de definiciones propias (DP) por repo
+  const [dpResults, setDpResults] = useState<Record<string, DpResult>>({})
+  const [dpLoading, setDpLoading] = useState<string | null>(null)
 
   const [manualUrl, setManualUrl] = useState('')
   const [manualName, setManualName] = useState('')
@@ -153,6 +139,21 @@ export default function AppScanner() {
     }
   }, [])
 
+  const runDp = useCallback(async (repoName: string) => {
+    setDpLoading(repoName)
+    setError(null)
+    try {
+      const res = await fetch(`/api/admin/github/dp-scan?repo=${encodeURIComponent(repoName)}`, { cache: 'no-store' })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Error al analizar DP')
+      setDpResults(d => ({ ...d, [repoName]: data }))
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Error al analizar DP')
+    } finally {
+      setDpLoading(null)
+    }
+  }, [])
+
   return (
     <div>
       {/* Header */}
@@ -231,19 +232,22 @@ export default function AppScanner() {
 
             {/* checks */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '6px', marginBottom: '14px' }}>
-              {(Object.keys(CHECK_LABELS) as (keyof Checks)[]).map(k => {
-                const ok = r.checks[k]
+              {r.checks.map(c => {
+                const isPass = c.status === 'pass'
+                const isNa = c.status === 'na'
+                const color = isPass ? 'var(--color-green)' : isNa ? 'var(--color-text-3)' : '#d9534f'
+                const bg = isPass ? 'rgba(46,160,67,0.08)' : isNa ? 'rgba(74,96,128,0.10)' : 'rgba(217,83,79,0.08)'
+                const border = isPass ? 'rgba(46,160,67,0.25)' : isNa ? 'var(--color-border)' : 'rgba(217,83,79,0.3)'
+                const icon = isPass ? '✓' : isNa ? '—' : '✕'
                 return (
-                  <div key={k} style={{
+                  <div key={c.key} title={isNa ? 'No aplica' : c.status} style={{
                     display: 'flex', alignItems: 'center', gap: '6px',
                     fontFamily: mono, fontSize: '10px', padding: '5px 8px', borderRadius: '4px',
-                    color: ok ? 'var(--color-green)' : 'var(--color-text-3)',
-                    background: ok ? 'rgba(46,160,67,0.08)' : 'rgba(74,96,128,0.12)',
-                    border: `1px solid ${ok ? 'rgba(46,160,67,0.25)' : 'var(--color-border)'}`,
-                    opacity: ok ? 1 : 0.6,
+                    color, background: bg, border: `1px solid ${border}`,
+                    opacity: isNa ? 0.5 : 1,
                   }}>
-                    <span>{ok ? '✓' : '✕'}</span>
-                    <span>{CHECK_LABELS[k]}</span>
+                    <span>{icon}</span>
+                    <span>{c.label}</span>
                   </div>
                 )
               })}
@@ -265,6 +269,13 @@ export default function AppScanner() {
               }}>
                 {surveying === r.name ? 'RELEVANDO…' : 'RELEVAR ENV'}
               </button>
+              <button onClick={() => runDp(r.name)} disabled={dpLoading === r.name} style={{
+                fontFamily: mono, fontSize: '9px', letterSpacing: '0.08em', padding: '5px 12px',
+                borderRadius: '4px', border: '1px solid var(--color-border)', color: 'var(--color-text-3)',
+                background: 'transparent', cursor: 'pointer',
+              }}>
+                {dpLoading === r.name ? 'ANALIZANDO…' : 'ANALIZAR DP'}
+              </button>
               {!r.registered_as && (
                 <button onClick={() => register({ name: r.name, repo_url: r.url, repo_branch: r.branch })} disabled={isImporting} style={{
                   fontFamily: mono, fontSize: '9px', letterSpacing: '0.08em', padding: '5px 12px',
@@ -277,9 +288,53 @@ export default function AppScanner() {
             </div>
 
             {surveys[r.name] && <SurveyPanel survey={surveys[r.name]} />}
+            {dpResults[r.name] && <DpPanel dp={dpResults[r.name]} />}
           </div>
         )
       })}
+    </div>
+  )
+}
+
+function DpPanel({ dp }: { dp: DpResult }) {
+  const conDp = dp.items.filter(i => i.present)
+  const limpio = dp.items.filter(i => !i.present)
+  return (
+    <div style={{ marginTop: '14px', padding: '14px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'rgba(74,96,128,0.08)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', flexWrap: 'wrap' }}>
+        <span style={{ fontFamily: mono, fontSize: '9px', letterSpacing: '0.1em', color: 'var(--color-text-3)' }}>DEFINICIONES PROPIAS</span>
+        <span style={{ fontFamily: mono, fontSize: '9px', padding: '2px 8px', borderRadius: '10px',
+          backgroundColor: dp.uses_shared_auth ? 'rgba(46,160,67,0.12)' : 'rgba(245,158,11,0.12)',
+          color: dp.uses_shared_auth ? 'var(--color-green)' : 'var(--color-gold)' }}>
+          {dp.uses_shared_auth ? 'usa @charlieuy711/auth' : 'NO usa el auth compartido'}
+        </span>
+        <span style={{ fontFamily: mono, fontSize: '9px', color: 'var(--color-text-3)', opacity: 0.6 }}>{dp.total_files} archivos</span>
+      </div>
+
+      {conDp.length === 0 ? (
+        <p style={{ fontSize: '12px', color: 'var(--color-green)' }}>✓ Sin definiciones propias detectadas — lista para tomar la config de WS.</p>
+      ) : (
+        <div style={{ display: 'grid', gap: '8px' }}>
+          {conDp.map(item => (
+            <div key={item.key}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#d9534f', fontFamily: mono, fontSize: '11px' }}>● {item.label}</span>
+              </div>
+              <div style={{ marginTop: '4px', paddingLeft: '14px' }}>
+                {item.files.map(f => (
+                  <div key={f} style={{ fontFamily: mono, fontSize: '10px', color: 'var(--color-text-3)' }}>{f}</div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {limpio.length > 0 && (
+        <p style={{ marginTop: '10px', fontFamily: mono, fontSize: '9px', color: 'var(--color-green)' }}>
+          OK: {limpio.map(i => i.label).join(' · ')}
+        </p>
+      )}
     </div>
   )
 }

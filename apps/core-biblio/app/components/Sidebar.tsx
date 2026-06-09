@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { createClient } from '@core/auth/supabaseClient'
+import { createClient } from '@charlieuy711/auth/supabase/client'
 
 const navItems = [
   {

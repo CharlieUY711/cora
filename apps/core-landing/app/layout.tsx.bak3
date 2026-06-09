@@ -1,6 +1,8 @@
 import { getCoreStyle } from '@/lib/core-theme'
 import type { Metadata } from "next";
+import { getCoreStyle } from '@/lib/core-theme'
 import { Geist, Geist_Mono } from "next/font/google";
+import { getCoreStyle } from '@/lib/core-theme'
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,8 +36,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-
-export const dynamic = 'force-dynamic'
 
 export default async function RootLayout({
   children,

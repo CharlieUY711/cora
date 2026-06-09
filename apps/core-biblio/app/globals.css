@@ -266,3 +266,15 @@ body {
     animation: none;
   }
 }
+
+/* CORE runtime override (estilo del ecosistema) */
+:root {
+  --color-navy:       var(--c-bg-surface, #0D2B55);
+  --color-blue:       var(--c-primary, #1A4F9C);
+  --color-blue-light: var(--c-primary-hover, #2E6FC4);
+  --color-gold:       var(--c-accent, #C9A84C);
+}
+body {
+  background-color: var(--c-bg, #060D1A);
+  color: var(--c-text, #E8EDF5);
+}

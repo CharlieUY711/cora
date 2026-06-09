@@ -3,37 +3,27 @@ import { useState, useEffect, useCallback } from 'react'
 
 type ConfigItem = { key: string; label: string | null; is_secret: boolean; has_value: boolean; value?: string }
 type SBProject = { id: string; label: string; project_ref: string | null; url: string; anon_key: string | null }
-type AppRow = {
-  id: string; name_es: string; supabase_project_id: string | null
-  access: string; auth_mode: string; status: string; vercel_project_id: string | null
-  email_verification: boolean
-}
 
 const mono = 'var(--font-mono)'
 
 export default function SettingsPanel() {
   const [config, setConfig] = useState<ConfigItem[]>([])
   const [projects, setProjects] = useState<SBProject[]>([])
-  const [apps, setApps] = useState<AppRow[]>([])
   const [error, setError] = useState<string | null>(null)
   const [savingKey, setSavingKey] = useState<string | null>(null)
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [np, setNp] = useState<SBProject>({ id: '', label: '', project_ref: '', url: '', anon_key: '' })
-  const [vpidDrafts, setVpidDrafts] = useState<Record<string, string>>({})
-  const [syncing, setSyncing] = useState<string | null>(null)
-  const [envBlocks, setEnvBlocks] = useState<Record<string, string>>({})
+  const [tab, setTab] = useState<'vault' | 'supabase'>('vault')
 
   const loadAll = useCallback(async () => {
     setError(null)
     try {
-      const [c, p, a] = await Promise.all([
+      const [c, p] = await Promise.all([
         fetch('/api/admin/config', { cache: 'no-store' }).then(r => r.json()),
         fetch('/api/admin/supabase/projects', { cache: 'no-store' }).then(r => r.json()),
-        fetch('/api/admin/apps', { cache: 'no-store' }).then(r => r.json()),
       ])
       if (c.items) setConfig(c.items)
       if (p.projects) setProjects(p.projects)
-      if (a.apps) setApps(a.apps)
     } catch {
       setError('No se pudo cargar la configuración.')
     }
@@ -44,8 +34,7 @@ export default function SettingsPanel() {
   const saveConfig = useCallback(async (key: string) => {
     const value = drafts[key]
     if (value === undefined) return
-    setSavingKey(key)
-    setError(null)
+    setSavingKey(key); setError(null)
     try {
       const res = await fetch('/api/admin/config', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -88,44 +77,11 @@ export default function SettingsPanel() {
     }
   }, [loadAll])
 
-  const updateApp = useCallback(async (appId: string, patch: Partial<AppRow>) => {
-    setError(null)
-    setApps(a => a.map(x => x.id === appId ? { ...x, ...patch } : x))
-    try {
-      const res = await fetch('/api/admin/apps', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: appId, ...patch }),
-      })
-      if (!res.ok) throw new Error((await res.json()).error || 'Error al actualizar')
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al actualizar')
-      await loadAll()
-    }
-  }, [loadAll])
-
-  const syncEnv = useCallback(async (appId: string) => {
-    setSyncing(appId)
-    setError(null)
-    try {
-      const res = await fetch('/api/admin/apps/configure-env', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ app_id: appId }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Error al sincronizar env')
-      setEnvBlocks(b => ({ ...b, [appId]: data.env_block || '' }))
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al sincronizar env')
-    } finally {
-      setSyncing(null)
-    }
-  }, [])
-
   return (
     <div>
-      <h2 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--color-text)', margin: '0 0 4px' }}>Settings</h2>
+      <h2 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--color-text)', margin: '0 0 4px' }}>Settings de Workspace</h2>
       <p style={{ fontSize: '12px', color: 'var(--color-text-3)', margin: '0 0 28px' }}>
-        Integraciones, proyectos de Supabase y control de acceso por app.
+        Integraciones y proyectos de Supabase del ecosistema. La config por app/tool vive en su botón CONFIG.
       </p>
 
       {error && (
@@ -134,9 +90,25 @@ export default function SettingsPanel() {
         </div>
       )}
 
-      {/* INTEGRACIONES */}
-      <SectionHeader label="INTEGRACIONES" />
-      <div style={{ display: 'grid', gap: '10px', marginBottom: '36px' }}>
+      {/* Sub-tabs */}
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '24px' }}>
+        {([['vault', 'API VAULT'], ['supabase', `PROYECTOS SUPABASE (${projects.length})`]] as const).map(([id, label]) => (
+          <button key={id} onClick={() => setTab(id)} style={{
+            fontFamily: mono, fontSize: '10px', letterSpacing: '0.08em', padding: '6px 14px',
+            borderRadius: '6px', border: '1px solid', cursor: 'pointer',
+            borderColor: tab === id ? 'var(--color-gold)' : 'var(--color-border)',
+            color: tab === id ? 'var(--color-gold)' : 'var(--color-text-3)',
+            background: tab === id ? 'rgba(201,168,76,0.08)' : 'transparent',
+          }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* API VAULT · INTEGRACIONES */}
+      {tab === 'vault' && (
+      <div style={{ display: 'grid', gap: '10px' }}>
+        {config.length === 0 && <p style={{ fontSize: '12px', color: 'var(--color-text-3)' }}>No hay keys cargadas todavía.</p>}
         {config.map(item => {
           const editing = drafts[item.key] !== undefined
           return (
@@ -165,21 +137,23 @@ export default function SettingsPanel() {
           )
         })}
       </div>
+      )}
 
       {/* PROYECTOS SUPABASE */}
-      <SectionHeader label="PROYECTOS SUPABASE" />
+      {tab === 'supabase' && (
+      <div>
       <div style={{ ...cardStyle, marginBottom: '12px' }}>
         <p style={{ fontFamily: mono, fontSize: '9px', letterSpacing: '0.1em', color: 'var(--color-text-3)', marginBottom: '12px' }}>NUEVO PROYECTO</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
-          <input placeholder="id (ej: core-prod)" value={np.id} onChange={e => setNp({ ...np, id: e.target.value })} style={inputStyle()} />
-          <input placeholder="label" value={np.label} onChange={e => setNp({ ...np, label: e.target.value })} style={inputStyle()} />
-          <input placeholder="https://xxx.supabase.co" value={np.url} onChange={e => setNp({ ...np, url: e.target.value })} style={inputStyle()} />
-          <input placeholder="project_ref (opcional)" value={np.project_ref ?? ''} onChange={e => setNp({ ...np, project_ref: e.target.value })} style={inputStyle()} />
-          <input placeholder="anon_key (opcional)" value={np.anon_key ?? ''} onChange={e => setNp({ ...np, anon_key: e.target.value })} style={{ ...inputStyle(), gridColumn: '1 / -1' }} />
+          <input value={np.id}          placeholder="id (ej. core-main)"  onChange={e => setNp(v => ({ ...v, id: e.target.value }))}          style={inputStyle()} />
+          <input value={np.label}       placeholder="label"               onChange={e => setNp(v => ({ ...v, label: e.target.value }))}       style={inputStyle()} />
+          <input value={np.url}         placeholder="url (https://…)"     onChange={e => setNp(v => ({ ...v, url: e.target.value }))}         style={inputStyle()} />
+          <input value={np.project_ref ?? ''} placeholder="project_ref"   onChange={e => setNp(v => ({ ...v, project_ref: e.target.value }))} style={inputStyle()} />
+          <input value={np.anon_key ?? ''}    placeholder="anon_key"      onChange={e => setNp(v => ({ ...v, anon_key: e.target.value }))}    style={{ ...inputStyle(), gridColumn: '1 / -1' }} />
         </div>
         <button onClick={addProject} style={btnPrimary(true)}>+ AGREGAR PROYECTO</button>
       </div>
-      <div style={{ display: 'grid', gap: '8px', marginBottom: '36px' }}>
+      <div style={{ display: 'grid', gap: '8px', marginBottom: '12px' }}>
         {projects.length === 0 && <p style={{ fontSize: '12px', color: 'var(--color-text-3)' }}>No hay proyectos cargados todavía.</p>}
         {projects.map(p => (
           <div key={p.id} style={{ ...cardStyle, display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -191,124 +165,8 @@ export default function SettingsPanel() {
           </div>
         ))}
       </div>
-
-      {/* ACCESO Y BASE POR APP */}
-      <SectionHeader label="ACCESO Y BASE POR APP" />
-      <div style={{ display: 'grid', gap: '8px' }}>
-        {apps.length === 0 && <p style={{ fontSize: '12px', color: 'var(--color-text-3)' }}>No hay apps registradas todavía.</p>}
-        {apps.map(a => {
-          const vpid = vpidDrafts[a.id] ?? (a.vercel_project_id ?? '')
-          const vpidChanged = vpid !== (a.vercel_project_id ?? '')
-          return (
-            <div key={a.id} style={{ ...cardStyle }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                <div style={{ flex: '1 1 160px', minWidth: '140px' }}>
-                  <span style={{ fontSize: '13px', color: 'var(--color-text)' }}>{a.name_es}</span>
-                  <span style={{ fontFamily: mono, fontSize: '9px', color: 'var(--color-text-3)', marginLeft: '8px' }}>{a.id}</span>
-                </div>
-
-                <Field label="ACCESO">
-                  <select value={a.access} onChange={e => updateApp(a.id, { access: e.target.value })} style={selectStyle}>
-                    <option value="public">public</option>
-                    <option value="restricted">restricted</option>
-                  </select>
-                </Field>
-
-                <Field label="LOGIN">
-                  <select
-                    value={a.auth_mode}
-                    onChange={e => updateApp(a.id, { auth_mode: e.target.value })}
-                    disabled={a.access !== 'restricted'}
-                    style={{ ...selectStyle, opacity: a.access !== 'restricted' ? 0.4 : 1 }}
-                  >
-                    <option value="ecosystem">ecosistema</option>
-                    <option value="standalone">stand alone</option>
-                  </select>
-                </Field>
-
-                <Field label="VALIDAR EMAIL">
-                  <select
-                    value={a.email_verification ? 'si' : 'no'}
-                    onChange={e => updateApp(a.id, { email_verification: e.target.value === 'si' })}
-                    style={selectStyle}
-                  >
-                    <option value="si">sí</option>
-                    <option value="no">no</option>
-                  </select>
-                </Field>
-
-                <Field label="BASE">
-                  <select value={a.supabase_project_id ?? ''} onChange={e => updateApp(a.id, { supabase_project_id: e.target.value || null })} style={selectStyle}>
-                    <option value="">— sin base —</option>
-                    {projects.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
-                  </select>
-                </Field>
-              </div>
-
-              {/* Vercel project id + sync env */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', flexWrap: 'wrap' }}>
-                <span style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.1em', color: 'var(--color-text-3)' }}>VERCEL PROJECT ID</span>
-                <input
-                  value={vpid}
-                  placeholder="prj_…"
-                  onChange={e => setVpidDrafts(d => ({ ...d, [a.id]: e.target.value }))}
-                  style={{ ...inputStyle(), flex: '0 1 280px', fontFamily: mono, fontSize: '11px' }}
-                />
-                {vpidChanged && (
-                  <button onClick={() => { updateApp(a.id, { vercel_project_id: vpid || null }); setVpidDrafts(d => { const n = { ...d }; delete n[a.id]; return n }) }} style={btnPrimary(true)}>
-                    GUARDAR
-                  </button>
-                )}
-                <button
-                  onClick={() => syncEnv(a.id)}
-                  disabled={syncing === a.id || !a.vercel_project_id || vpidChanged}
-                  title={!a.vercel_project_id ? 'Cargá y guardá el Vercel Project ID primero' : ''}
-                  style={btnPrimary(!!a.vercel_project_id && !vpidChanged)}
-                >
-                  {syncing === a.id ? 'SINCRONIZANDO…' : 'SYNC ENV → VERCEL'}
-                </button>
-              </div>
-
-              {envBlocks[a.id] && (
-                <div style={{ marginTop: '10px' }}>
-                  <p style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.1em', color: 'var(--color-green)', margin: '0 0 6px' }}>
-                    ✓ ENV SETEADAS EN VERCEL · BLOQUE PARA .env.local (sensible):
-                  </p>
-                  <textarea
-                    readOnly
-                    value={envBlocks[a.id]}
-                    onFocus={e => e.currentTarget.select()}
-                    rows={3}
-                    style={{
-                      width: '100%', fontFamily: mono, fontSize: '11px', padding: '10px',
-                      borderRadius: '6px', border: '1px solid var(--color-border)',
-                      background: 'var(--bg-deep)', color: 'var(--color-text)', resize: 'vertical',
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-          )
-        })}
       </div>
-    </div>
-  )
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-      <span style={{ fontFamily: mono, fontSize: '8px', letterSpacing: '0.1em', color: 'var(--color-text-3)' }}>{label}</span>
-      {children}
-    </div>
-  )
-}
-
-function SectionHeader({ label }: { label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-      <p style={{ fontFamily: mono, fontSize: '10px', letterSpacing: '0.1em', color: 'var(--color-text-3)', whiteSpace: 'nowrap', margin: 0 }}>{label}</p>
-      <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-border)' }} />
+      )}
     </div>
   )
 }
@@ -330,11 +188,6 @@ function inputStyle(): React.CSSProperties {
     fontFamily: 'var(--font-base)', fontSize: '13px', padding: '8px 12px', borderRadius: '6px',
     border: '1px solid var(--color-border)', background: 'var(--bg-deep)', color: 'var(--color-text)', flex: 1, minWidth: 0,
   }
-}
-
-const selectStyle: React.CSSProperties = {
-  fontFamily: mono, fontSize: '11px', padding: '6px 10px', borderRadius: '6px',
-  border: '1px solid var(--color-border)', background: 'var(--bg-deep)', color: 'var(--color-text)', cursor: 'pointer',
 }
 
 function btnPrimary(active: boolean): React.CSSProperties {
