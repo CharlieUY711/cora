@@ -13,23 +13,27 @@ import {
 } from '../services/apiVaultTypes'
 import { isExpired, isExpiringSoon } from '../services/apiVaultService'
 
-// ── Paleta core-market ────────────────────────────────────────────────────────
+// ── Paleta CORE Market (tokens oficiales brand.css + theme.css) ──────────────
 const C = {
-  bg:        '#0A1628',
-  surface:   '#0F1F3D',
-  surfaceAlt:'#132241',
-  border:    '#1B2E52',
-  borderAlt: '#243A63',
-  text:      '#E8EDF5',
-  textMuted: '#6B82A8',
-  textDim:   '#3D5070',
-  green:     '#1DC878',
-  greenDim:  'rgba(29,200,120,0.12)',
-  blue:      '#1B5AC4',
-  blueDim:   'rgba(27,90,196,0.15)',
-  red:       '#E53E3E',
-  amber:     '#D97706',
-  overlay:   'rgba(5,10,25,0.75)',
+  bg:        '#081C38',   // --brand-secondary-dark
+  surface:   '#0D2B55',   // --brand-secondary / --color-bg-sidebar
+  surfaceAlt:'#0F3060',   // variante intermedia
+  border:    '#1A3A6A',   // borde sutil azul
+  borderAlt: '#C8D5E8',   // --color-border (para modales claros)
+  text:      '#E8EDF5',   // --gray-100
+  textMuted: '#7A8FAA',   // intermedio
+  textDim:   '#3D5C7A',   // apagado
+  green:     '#1D9E75',   // --color-success
+  greenDim:  'rgba(29,158,117,0.12)',
+  blue:      '#1A4F9C',   // --brand-primary
+  blueDim:   'rgba(26,79,156,0.15)',
+  accent:    '#C9A84C',   // --brand-accent (dorado)
+  accentDim: 'rgba(201,168,76,0.1)',
+  red:       '#C0392B',   // --color-danger
+  amber:     '#C9A84C',   // --color-warning
+  overlay:   'rgba(8,28,56,0.82)',
+  font:      "Calibri, 'Segoe UI', system-ui, sans-serif",
+  mono:      "'Courier New', monospace",
 }
 
 // ── Props ─────────────────────────────────────────────────────────────────────
@@ -66,7 +70,7 @@ const ENV_BADGE: Record<VaultEnv, { bg: string; color: string; label: string }> 
 function EnvBadge({ env }: { env: VaultEnv }) {
   const b = ENV_BADGE[env] || ENV_BADGE.testing
   return (
-    <span style={{ fontSize:10, padding:'2px 7px', borderRadius:4, fontFamily:'monospace',
+    <span style={{ fontSize:10, padding:'2px 7px', borderRadius:4, fontFamily:C.mono,
       fontWeight:700, letterSpacing:'0.06em', background:b.bg, color:b.color }}>
       {b.label}
     </span>
@@ -76,7 +80,7 @@ function EnvBadge({ env }: { env: VaultEnv }) {
 function Tag({ children }: { children: string }) {
   return (
     <span style={{ fontSize:10, padding:'2px 8px', borderRadius:4,
-      background:C.greenDim, color:C.green, fontFamily:'monospace' }}>
+      background:C.greenDim, color:C.green, fontFamily:C.mono }}>
       {children}
     </span>
   )
@@ -143,7 +147,7 @@ export function ApiVaultPage({ supabase, tenantId, appId, className = '' }: ApiV
           <div style={{ fontSize:12, color:C.textMuted }}>Gestion de tokens y credenciales</div>
         </div>
         <button onClick={() => { setEditing(null); setShowForm(true) }}
-          style={{ display:'flex', alignItems:'center', gap:6, background:C.green, color:'#061A0E',
+          style={{ display:'flex', alignItems:'center', gap:6, background:C.blue, color:'#fff',
             border:'none', borderRadius:6, padding:'8px 18px', fontSize:13, fontWeight:700, cursor:'pointer' }}>
           + Nueva credencial
         </button>
@@ -159,7 +163,7 @@ export function ApiVaultPage({ supabase, tenantId, appId, className = '' }: ApiV
         ].map((st) => (
           <div key={st.label} style={{ background:C.surface, border:`1px solid ${C.border}`,
             borderRadius:8, padding:'12px 16px' }}>
-            <div style={{ fontSize:9, color:C.textDim, fontFamily:'monospace',
+            <div style={{ fontSize:9, color:C.textDim, fontFamily:C.mono,
               letterSpacing:'0.1em', marginBottom:6 }}>{st.label}</div>
             <div style={{ fontSize:24, fontWeight:700,
               color: st.warn ? C.amber : C.text }}>{st.value}</div>
@@ -179,7 +183,7 @@ export function ApiVaultPage({ supabase, tenantId, appId, className = '' }: ApiV
         {platforms.map((p) => (
           <button key={p} onClick={() => setFilter(p)}
             style={{ padding:'4px 12px', borderRadius:4, fontSize:12, cursor:'pointer',
-              fontFamily:'monospace', letterSpacing:'0.04em', transition:'all .15s',
+              fontFamily:C.mono, letterSpacing:'0.04em', transition:'all .15s',
               background: filter === p ? C.green    : 'transparent',
               color:      filter === p ? '#061A0E'  : C.textMuted,
               border:     filter === p ? `1px solid ${C.green}` : `1px solid ${C.border}` }}>
@@ -198,7 +202,7 @@ export function ApiVaultPage({ supabase, tenantId, appId, className = '' }: ApiV
       {/* Lista */}
       {loading ? (
         <p style={{ textAlign:'center', color:C.textMuted, padding:'3rem',
-          fontFamily:'monospace', fontSize:12 }}>Cargando...</p>
+          fontFamily:C.mono, fontSize:12 }}>Cargando...</p>
       ) : filtered.length === 0 ? (
         <div style={{ textAlign:'center', padding:'4rem 1rem', color:C.textDim,
           border:`1px dashed ${C.border}`, borderRadius:10 }}>
@@ -251,7 +255,7 @@ export function ApiVaultPage({ supabase, tenantId, appId, className = '' }: ApiV
                 <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
                   <code style={{ flex:1, fontSize:11, background:C.bg, border:`1px solid ${C.border}`,
                     borderRadius:5, padding:'6px 10px', color:C.textMuted, overflow:'hidden',
-                    textOverflow:'ellipsis', whiteSpace:'nowrap', fontFamily:'monospace' }}>
+                    textOverflow:'ellipsis', whiteSpace:'nowrap', fontFamily:C.mono }}>
                     {isRev ? entry.value : mask(entry.value)}
                   </code>
                   <button onClick={() => toggleReveal(entry.id)}
@@ -266,10 +270,10 @@ export function ApiVaultPage({ supabase, tenantId, appId, className = '' }: ApiV
                   <EnvBadge env={entry.env} />
                   {entry.tags.map((t) => <Tag key={t}>{t}</Tag>)}
                   {status === 'expired' && (
-                    <span style={{ fontSize:11, color:C.red, fontFamily:'monospace' }}>⚠ VENCIDA</span>
+                    <span style={{ fontSize:11, color:C.red, fontFamily:C.mono }}>⚠ VENCIDA</span>
                   )}
                   {status === 'soon' && (
-                    <span style={{ fontSize:11, color:C.amber, fontFamily:'monospace' }}>⏰ VENCE PRONTO</span>
+                    <span style={{ fontSize:11, color:C.amber, fontFamily:C.mono }}>⏰ VENCE PRONTO</span>
                   )}
                 </div>
               </div>
@@ -328,7 +332,7 @@ function VaultForm({ initial, onClose, onSave }: VaultFormProps) {
   }
   const labelStyle: React.CSSProperties = {
     display:'block', fontSize:10, color:C.textMuted,
-    fontFamily:'monospace', letterSpacing:'0.08em', marginBottom:5,
+    fontFamily:C.mono, letterSpacing:'0.08em', marginBottom:5,
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -357,7 +361,7 @@ function VaultForm({ initial, onClose, onSave }: VaultFormProps) {
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
           padding:'20px 24px', borderBottom:`1px solid ${C.border}` }}>
           <div>
-            <div style={{ fontSize:9, color:C.textDim, fontFamily:'monospace',
+            <div style={{ fontSize:9, color:C.textDim, fontFamily:C.mono,
               letterSpacing:'0.1em', marginBottom:3 }}>
               {initial ? 'EDITAR' : 'NUEVA'} CREDENCIAL
             </div>
@@ -406,7 +410,7 @@ function VaultForm({ initial, onClose, onSave }: VaultFormProps) {
             <div style={{ position:'relative' }}>
               <input type={showVal ? 'text' : 'password'} value={value}
                 onChange={(e) => setValue(e.target.value)} placeholder="sk-..."
-                style={{ ...inputStyle, paddingRight:38, fontFamily:'monospace' }} />
+                style={{ ...inputStyle, paddingRight:38, fontFamily:C.mono }} />
               <button type="button" onClick={() => setShowVal(!showVal)}
                 style={{ position:'absolute', right:10, top:'50%', transform:'translateY(-50%)',
                   background:'none', border:'none', cursor:'pointer', color:C.textMuted, fontSize:15 }}>
@@ -452,8 +456,8 @@ function VaultForm({ initial, onClose, onSave }: VaultFormProps) {
             </button>
             <button type="submit" disabled={saving}
               style={{ padding:'9px 20px', fontSize:13, fontWeight:700,
-                background: saving ? C.borderAlt : C.green,
-                color: saving ? C.textMuted : '#061A0E',
+                background: saving ? C.borderAlt : C.blue,
+                color: saving ? C.textMuted : '#fff',
                 border:'none', borderRadius:6, cursor: saving ? 'not-allowed' : 'pointer' }}>
               {saving ? 'Guardando...' : 'Guardar'}
             </button>
@@ -512,11 +516,11 @@ function VaultDetail({ entry, onClose, onEdit, onDelete }: VaultDetailProps) {
         <div style={{ padding:24 }}>
           {/* Valor */}
           <div style={{ marginBottom:18 }}>
-            <div style={{ fontSize:9, color:C.textDim, fontFamily:'monospace',
+            <div style={{ fontSize:9, color:C.textDim, fontFamily:C.mono,
               letterSpacing:'0.1em', marginBottom:8 }}>VALOR</div>
             <div style={{ display:'flex', gap:8 }}>
               <code style={{ flex:1, fontSize:11, background:C.bg, border:`1px solid ${C.border}`,
-                borderRadius:6, padding:'8px 12px', fontFamily:'monospace', color:C.textMuted,
+                borderRadius:6, padding:'8px 12px', fontFamily:C.mono, color:C.textMuted,
                 overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
                 {showVal ? entry.value : mask(entry.value)}
               </code>
@@ -548,7 +552,7 @@ function VaultDetail({ entry, onClose, onEdit, onDelete }: VaultDetailProps) {
                 return (
                   <tr key={l} style={{ borderBottom:`1px solid ${C.border}` }}>
                     <td style={{ padding:'8px 0', color:C.textDim, width:110,
-                      fontSize:10, fontFamily:'monospace', letterSpacing:'0.06em' }}>
+                      fontSize:10, fontFamily:C.mono, letterSpacing:'0.06em' }}>
                       {(l as string).toUpperCase()}
                     </td>
                     <td style={{ padding:'8px 0', color:C.text }}>{v}</td>
@@ -570,12 +574,12 @@ function VaultDetail({ entry, onClose, onEdit, onDelete }: VaultDetailProps) {
             </p>
           )}
           {status === 'expired' && (
-            <p style={{ fontSize:12, color:C.red, marginTop:10, fontFamily:'monospace' }}>
+            <p style={{ fontSize:12, color:C.red, marginTop:10, fontFamily:C.mono }}>
               ⚠ CREDENCIAL VENCIDA
             </p>
           )}
           {status === 'soon' && (
-            <p style={{ fontSize:12, color:C.amber, marginTop:10, fontFamily:'monospace' }}>
+            <p style={{ fontSize:12, color:C.amber, marginTop:10, fontFamily:C.mono }}>
               ⏰ VENCE EN MENOS DE 30 DIAS
             </p>
           )}
@@ -590,7 +594,7 @@ function VaultDetail({ entry, onClose, onEdit, onDelete }: VaultDetailProps) {
           </button>
           <button onClick={onEdit}
             style={{ padding:'8px 20px', fontSize:13, fontWeight:700,
-              background:C.green, color:'#061A0E', border:'none', borderRadius:6, cursor:'pointer' }}>
+              background:C.blue, color:'#fff', border:'none', borderRadius:6, cursor:'pointer' }}>
             Editar
           </button>
         </div>
