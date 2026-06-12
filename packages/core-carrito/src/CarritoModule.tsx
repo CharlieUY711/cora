@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    CORE Market — Carrito Module  v3.0
    ── World-class, standalone / embeddable, multi-pasarela ──────────────
 
@@ -93,7 +93,7 @@ export interface CarritoModuleProps {
 
 // ── Payment Adapters por defecto ───────────────────────────────────────
 
-const DEFAULT_GATEWAYS: PaymentAdapter[] = [
+export const DEFAULT_GATEWAYS: PaymentAdapter[] = [
   {
     id: 'mercadopago',
     label: 'MercadoPago',
@@ -182,14 +182,20 @@ const T = {
     flexDirection: 'column' as const,
   } as CSSProperties,
 
-  // Header
+  // Header — igual al Navbar
   header: {
-    background: 'var(--color-bg-topbar, #0D2B55)',
-    padding: '0 var(--space-5, 24px)',
-    height: '56px',
+    background: '#0D2B55',
+    padding: '0 24px',
+    height: '50px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexShrink: 0,
+  } as CSSProperties,
+
+  headerAccentLine: {
+    height: '2px',
+    background: '#1D9E75',
     flexShrink: 0,
   } as CSSProperties,
 
@@ -217,9 +223,10 @@ const T = {
 
   // Steps
   stepsBar: {
-    background: 'var(--brand-secondary, #0D2B55)',
+    background: '#ffffff',
+    borderBottom: '1px solid #C8D5E8',
     display: 'flex',
-    padding: '0 var(--space-5, 24px)',
+    padding: '0 24px',
     gap: 0,
     flexShrink: 0,
   } as CSSProperties,
@@ -231,18 +238,19 @@ const T = {
     letterSpacing: '0.1em',
     textTransform: 'uppercase' as const,
     color: active
-      ? 'var(--brand-accent, #C9A84C)'
+      ? '#1A4F9C'
       : done
-        ? 'rgba(255,255,255,0.5)'
-        : 'rgba(255,255,255,0.3)',
+        ? '#1D9E75'
+        : 'rgba(0,0,0,0.3)',
     borderBottom: active
-      ? '2px solid var(--brand-accent, #C9A84C)'
+      ? '2px solid #1A4F9C'
       : '2px solid transparent',
     cursor: done ? 'pointer' : 'default',
     transition: 'all 200ms ease',
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
+    background: 'transparent',
   }),
 
   // Layout
@@ -998,6 +1006,8 @@ export default function CarritoModule({
         }
       </header>
 
+      <div style={T.headerAccentLine} />
+
       {/* ── Steps bar ── */}
       <nav style={T.stepsBar} role="navigation" aria-label="Pasos del checkout">
         {STEP_LABELS.map((s, i) => {
@@ -1022,7 +1032,7 @@ export default function CarritoModule({
       <div style={T.body}>
         {/* ═══ STEP: CART ═══ */}
         {step === 'cart' && (
-          <div style={isMobile ? T.gridMono : T.grid}>
+          <div style={(isMobile || mode === 'embed') ? T.gridMono : T.grid}>
             {/* Items */}
             <div>
               {error && (
@@ -1077,7 +1087,7 @@ export default function CarritoModule({
 
             {/* Summary */}
             <div>
-              <div style={{ ...T.card, position: isMobile ? 'static' : 'sticky', top: 16 }}>
+              <div style={{ ...T.card, position: (isMobile || mode === 'embed') ? 'static' : 'sticky', top: 16 }}>
                 <div style={T.cardHeader}>
                   <span style={T.cardHeaderTitle}>Resumen</span>
                 </div>
