@@ -1,0 +1,63 @@
+{
+  "id": "a1b2c3d4-0000-0000-0000-000000000001",
+  "tipo": "secondhand",
+  "status": "active",
+  "vendedor_id": "usr-0000-0000-0001",
+  "nombre": "iPhone 14 Pro 256GB Negro Espacial",
+  "descripcion": "iPhone 14 Pro en excelente estado. Batería al 91%, sin rayones, con funda original y cargador. Desbloqueo facial funcionando.",
+  "slug": "iphone-14-pro-256gb-negro-espacial-a1b2c3",
+  "precio": 42000,
+  "precio_original": 52000,
+  "descuento_pct": 19,
+  "moneda": "UYU",
+  "permite_descuento": true,
+  "imagen_principal": "https://biblioteca.oddy.com.uy/storage/v1/object/public/biblioteca/usr-0001/iphone14_main.jpg",
+  "imagenes": [
+    { "url": "https://biblioteca.oddy.com.uy/...", "orden": 0, "principal": true,  "width": 1200, "height": 1200 },
+    { "url": "https://biblioteca.oddy.com.uy/...", "orden": 1, "principal": false, "width": 1200, "height": 1200 },
+    { "url": "https://biblioteca.oddy.com.uy/...", "orden": 2, "principal": false, "width": 1200, "height": 1200 }
+  ],
+  "videos": [
+    { "url": "https://biblioteca.oddy.com.uy/...", "orden": 0, "duracion_seg": 18, "thumbnail": "https://..." }
+  ],
+  "departamento_id": "dep-electronica",
+  "departamento_nombre": "Electrónica",
+  "categoria_id": "cat-celulares",
+  "categoria_nombre": "Celulares y smartphones",
+  "subcategoria_id": "sub-apple",
+  "atributos": {
+    "marca":     "Apple",
+    "modelo":    "iPhone 14 Pro",
+    "almacenamiento": "256GB",
+    "color":     "Negro espacial",
+    "red":       "5G",
+    "sistema_operativo": "iOS 17",
+    "bateria_pct": 91
+  },
+  "condicion": "Excelente",
+  "stock": 1,
+  "stock_ilimitado": false,
+  "sku": "SH-IPHO-USR0-K3X9",
+  "peso_kg": 0.206,
+  "alto_cm": 14.75,
+  "ancho_cm": 7.12,
+  "largo_cm": 0.79,
+  "envio_tipo": "custom",
+  "costo_envio": 250,
+  "envio_gratis": false,
+  "retiro_persona": true,
+  "formato_venta": "unidad",
+  "cantidad_por_pack": 1,
+  "info_regulatoria": {
+    "pais_origen": "China",
+    "requiere_factura": false
+  },
+  "garantia_tipo": "vendedor",
+  "garantia_meses": 1,
+  "visitas": 0,
+  "favoritos": 0,
+  "rating_count": 0,
+  "created_at": "2026-04-29T12:00:00Z",
+  "updated_at": "2026-04-29T12:00:00Z",
+  "published_at": "2026-04-29T12:00:00Z"
+}

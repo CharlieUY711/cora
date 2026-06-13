@@ -8,3 +8,6 @@ audit-export/
 temp/
 *.zip
 .vercel
+tools/BackUp/
+tools/tool-dashboard/core-dashboard-legacy/
+tools/tool-dashboard/core-dashboard2-legacy/

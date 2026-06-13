@@ -1,0 +1,25 @@
+// CAMBIO 1 — reemplazar el import de RepoScan:
+// ANTES:
+import RepoScan from './RepoScan'
+// DESPUÉS:
+import ToolLayerScan from './ToolLayerScan'
+
+// CAMBIO 2 — en el render del expand (línea ~100), reemplazar:
+// ANTES:
+{scanOpen && repo && (
+  <tr style={{ borderBottom: '1px solid rgba(30,51,84,0.5)' }}>
+    <td colSpan={COLS} style={{ padding: '4px 12px 16px', background: 'rgba(15,56,117,0.06)' }}>
+      <RepoScan repo={repo} />
+    </td>
+  </tr>
+)}
+// DESPUÉS:
+{scanOpen && repo && (
+  <tr style={{ borderBottom: '1px solid rgba(30,51,84,0.5)' }}>
+    <td colSpan={COLS} style={{ padding: '4px 12px 16px', background: 'rgba(15,56,117,0.06)' }}>
+      <ToolLayerScan repo={repo} />
+    </td>
+  </tr>
+)}
+
+// NADA MÁS CAMBIA EN ToolsPanel.tsx

@@ -1,0 +1,158 @@
+.core-tb { background: #0D2B55 !important; border-bottom: none !important; }
+[data-sh="true"]  .core-tb { background: #1D9E75 !important; }
+[data-sh="false"] .core-tb { background: #0D2B55 !important; }
+
+.core-header {
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* Logo [m] — 34x34 */
+.core-header-left > div > div:first-child {
+  width: 34px !important;
+  height: 34px !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+/* Botón SECOND/MARKET — 34px alto */
+.core-mode-btn,
+.core-header-left button {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  box-sizing: border-box !important;
+}
+
+/* Buscador — 34px alto */
+.core-search {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  flex: 1 !important;
+  box-sizing: border-box !important;
+}
+
+/* Botón usuario/login — 34px alto */
+.core-login-btn,
+.core-header-right > a {
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Ocultar buscador móvil en desktop */
+.core-mobile-search-only { display: none !important; }
+@media (max-width: 768px) {
+  .core-mobile-search-only { display: flex !important; }
+}
+
+/* Menú centrado */
+.core-categories-menu {
+  justify-content: center !important;
+}
+
+/* Botón agregar al carrito */
+.core-add-btn {
+  background: #1A4F9C !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: Calibri, 'Segoe UI', sans-serif !important;
+  font-weight: 700 !important;
+  transition: background 200ms ease !important;
+}
+.core-add-btn:hover:not(:disabled) { background: #0D2B55 !important; }
+[data-sh="true"] .core-add-btn { background: #1D9E75 !important; }
+[data-sh="true"] .core-add-btn:hover:not(:disabled) { background: #16845F !important; }
+
+/* Botón agregar al carrito — letra más grande */
+.core-add-btn {
+  font-size: 0.85rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Barra departamento — Navy en lugar de naranja */
+.core-divider {
+  background-color: #1A4F9C !important;
+}
+.core-dept-label {
+  background-color: #1A4F9C !important;
+  color: #fff !important;
+}
+[data-sh="true"] .core-divider { background-color: #1D9E75 !important; }
+[data-sh="true"] .core-dept-label { background-color: #1D9E75 !important; color: #fff !important; }
+
+/* Botón agregar al carrito — letra más grande */
+.core-add-btn {
+  font-size: 0.85rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Barra departamento — Navy en lugar de naranja */
+.core-divider {
+  background-color: #1A4F9C !important;
+}
+.core-dept-label {
+  background-color: #1A4F9C !important;
+  color: #fff !important;
+}
+[data-sh="true"] .core-divider { background-color: #1D9E75 !important; }
+[data-sh="true"] .core-dept-label { background-color: #1D9E75 !important; color: #fff !important; }
+
+/* Quitar barra de departamento del frente */
+.core-ff .core-divider { display: none !important; }
+
+/* Categoría texto blanco */
+.core-dept-label { color: #ffffff !important; }
+
+/* Quitar borde naranja del reverso */
+.core-fb { border: none !important; box-shadow: none !important; }
+.core-fc { border: none !important; }
+
+/* Quitar todo el naranja de las tarjetas */
+.core-divider,
+.core-dept-label,
+.core-ff .core-divider,
+.core-fb .core-divider {
+  background-color: inherit !important;
+}
+
+/* Borde de tarjeta — color de categoría, no naranja */
+.core-fc {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Quitar borde naranja del flip */
+.core-fc.flipped {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Miniaturas del reverso — borde azul en lugar de naranja */
+.core-cs-thumb { border-color: #1A4F9C !important; }
+.core-cs-thumb:hover { border-color: #0D2B55 !important; }
+.core-panel-miniatures img,
+.core-fb img[style*="border"] { border-color: #1A4F9C !important; }
+
+/* Botón COMPRAR — esquinas rectas arriba, redondeadas abajo, efecto volumen */
+.core-add-btn {
+  border-radius: 0 0 6px 6px !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,.25) !important;
+  transform: translateY(0) !important;
+  transition: transform 100ms ease, box-shadow 100ms ease !important;
+}
+.core-add-btn:active:not(:disabled) {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,.25) !important;
+}
