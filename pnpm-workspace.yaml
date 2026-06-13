@@ -1,4 +1,15 @@
 packages:
-  - apps/*
-  - packages/*
-  - tools/*
+  - "packages/core-apivault"
+  - "packages/core-auth"
+  - "packages/core-carrito"
+  - "packages/core-design"
+  - "packages/core-direcciones"
+  - "packages/core-foundation-config-runtime"
+  - "packages/core-foundation-config-types"
+  - "packages/core-globe"
+  - "packages/core-i18n"
+  - "packages/core-meta"
+  - "packages/core-mlmp"
+  - "packages/core-perfil"
+  - "packages/core-test"
+  - "packages/core-ui"
