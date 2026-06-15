@@ -429,13 +429,29 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
     return { tmp, mime:"image/"+outputFormat, q:quality/100 };
   };
 
-  // Exportar = descargar al equipo
+  // Exportar = abrir el explorador para guardar en el equipo
   const downloadImage = () => {
     const e=buildExportCanvas(); if(!e) return;
-    const a=document.createElement("a");
-    a.href=e.tmp.toDataURL(e.mime,e.q);
-    a.download=`${(fileName||"imagen").replace(/\.[^.]+$/,"")}.${outputFormat==="jpeg"?"jpg":outputFormat}`;
-    a.click();
+    const ext  = outputFormat==="jpeg" ? "jpg" : outputFormat;
+    const fname= `${(fileName||"imagen").replace(/\.[^.]+$/,"")}.${ext}`;
+    e.tmp.toBlob(async (blob)=>{
+      if(!blob) return;
+      if (window.showSaveFilePicker) {
+        try {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: fname,
+            types: [{ description:"Imagen", accept: { [e.mime]: ["."+ext] } }],
+          });
+          const w = await handle.createWritable();
+          await w.write(blob); await w.close();
+          return;
+        } catch (err) { if (err && err.name==="AbortError") return; }
+      }
+      const a=document.createElement("a");
+      const url=URL.createObjectURL(blob);
+      a.href=url; a.download=fname; a.click();
+      URL.revokeObjectURL(url);
+    }, e.mime, e.q);
   };
 
   // Enviar a biblioteca = manda el blob al host (Supabase)
