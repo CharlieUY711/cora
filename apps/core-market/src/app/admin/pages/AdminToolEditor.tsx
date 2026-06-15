@@ -7,6 +7,7 @@
 import { useState, useCallback } from "react";
 import { supabase } from "../../../utils/supabase/client";
 import ToolEditor from "../../../lib/tool-editor/src/components/ToolEditor";
+import AdminBiblioteca from "./AdminBiblioteca";
 
 interface UploadStatus {
   state: "idle" | "uploading" | "done" | "error";
@@ -60,6 +61,8 @@ function UploadBanner({ status }: { status: UploadStatus }) {
 export default function AdminToolEditor() {
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>({ state: "idle", message: "" });
   const [aiEnabled, setAiEnabled]       = useState(false);
+  const [pickerOpen, setPickerOpen]     = useState(false);
+  const [incomingImage, setIncoming]    = useState<{ url: string; name: string; key: number } | null>(null);
 
   const handleExport = useCallback(async (blob: Blob, format: string) => {
     setUploadStatus({ state: "uploading", message: "Subiendo imagen editada…" });
@@ -91,6 +94,14 @@ export default function AdminToolEditor() {
     }
   }, []);
 
+  const handlePickFromLibrary = useCallback((items: any[]) => {
+    setPickerOpen(false);
+    const it = items && items[0];
+    if (!it) return;
+    const { data } = supabase.storage.from(it.bucket || "biblioteca").getPublicUrl(it.path);
+    setIncoming({ url: data.publicUrl, name: it.nombre || "biblioteca", key: Date.now() });
+  }, []);
+
   const activeConfig = {
     ...EDITOR_CONFIG,
     features: { ...EDITOR_CONFIG.features, removeBackground: aiEnabled },
@@ -102,31 +113,6 @@ export default function AdminToolEditor() {
       fontFamily: "Calibri, 'Segoe UI', system-ui, sans-serif",
       background: "#F2F5FA",
     }}>
-      {/* Topbar mínimo */}
-      <div style={{
-        display: "flex", alignItems: "center", gap: 12,
-        padding: "10px 16px", background: "#fff",
-        borderBottom: "1px solid #C8D5E8",
-        boxShadow: "0 1px 4px rgba(13,43,85,.06)", flexShrink: 0,
-      }}>
-        <div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#0D2B55", lineHeight: 1 }}>Editor de imágenes</div>
-          <div style={{ fontSize: 11, color: "#7A7A7A", marginTop: 2 }}>Editá y exportá directo a la Biblioteca</div>
-        </div>
-        <div style={{ flex: 1 }} />
-        <button
-          onClick={() => setAiEnabled(v => !v)}
-          style={{
-            padding: "5px 12px", borderRadius: 4, cursor: "pointer",
-            fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
-            border: `1px solid ${aiEnabled ? "#1D9E75" : "#C8D5E8"}`,
-            background: aiEnabled ? "rgba(29,158,117,.08)" : "transparent",
-            color: aiEnabled ? "#1D9E75" : "#7A7A7A", transition: "all .15s",
-          }}>
-          {aiEnabled ? "✓ AI activa" : "Activar AI"}
-        </button>
-      </div>
-
       {/* Banner upload */}
       <UploadBanner status={uploadStatus} />
 
@@ -134,11 +120,35 @@ export default function AdminToolEditor() {
       <div style={{ flex: 1, overflow: "hidden" }}>
         <ToolEditor
           config={activeConfig}
-          onExport={handleExport}
+          aiEnabled={aiEnabled}
+          onToggleAI={() => setAiEnabled(v => !v)}
+          onSaveToLibrary={handleExport}
+          onRequestLibrary={() => setPickerOpen(true)}
+          incomingImage={incomingImage}
           onError={(err: { message: string }) =>
             setUploadStatus({ state: "error", message: err.message })}
         />
       </div>
+
+      {pickerOpen && (
+        <div onClick={e => { if (e.target === e.currentTarget) setPickerOpen(false); }}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.6)", zIndex: 9999,
+            display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+          <div style={{ background: "#fff", borderRadius: 16, width: "100%", maxWidth: 900,
+            maxHeight: "85vh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "1rem 1.25rem", borderBottom: "1px solid #E5E7EB" }}>
+              <span style={{ fontWeight: 700, fontSize: "1rem", color: "#0D2B55" }}>Abrir desde biblioteca</span>
+              <button onClick={() => setPickerOpen(false)}
+                style={{ background: "none", border: "none", fontSize: "1.25rem", cursor: "pointer", color: "#6B7280" }}>✕</button>
+            </div>
+            <div style={{ flex: 1, overflow: "auto", padding: "1rem" }}>
+              <AdminBiblioteca mode="modal" maxImages={1} maxVideos={0}
+                onSelect={handlePickFromLibrary} selectedIds={[]} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -107,7 +107,7 @@ function TbBtn({ onClick, children, dim, accent, danger }) {
 
 // ─── Componente interno (sin error boundary) ──────────────────────────────────
 
-function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToLibrary, onRequestLibrary, incomingImage, aiEnabled, onToggleAI, onReady, onChange, onError }) {
+function ToolEditorInner({ initialImage, config: userConfig, onExport, onReady, onChange, onError }) {
   const canvasRef    = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -230,35 +230,6 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
     reader.readAsDataURL(file);
     URL.revokeObjectURL(url);
   }, [fitToView, saveSnap, resetAdj]);
-
-  // ─── loadImageFromUrl — cargar desde URL (Abrir desde biblioteca) ─────────
-  const loadImageFromUrl = useCallback((url, name) => {
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-    image.onload = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      canvas.style.filter = "none";
-      canvas.width = image.width; canvas.height = image.height;
-      canvas.getContext("2d").drawImage(image, 0, 0);
-      cleanImgRef.current = image;
-      setImgEl(image);
-      setFileName(name || "biblioteca");
-      setCanvasDims({ w:image.width, h:image.height });
-      setOutW(image.width); setOutH(image.height);
-      resetAdj(); setActiveFilter("none");
-      fitToView(image.width, image.height);
-      histRef.current = { list:[], idx:-1 };
-      saveSnap(canvas);
-    };
-    image.onerror = () => onError && onError({ message:"No se pudo cargar la imagen de la biblioteca" });
-    image.src = url;
-  }, [fitToView, saveSnap, resetAdj]);
-
-  // Carga la imagen entrante desde el host (selector de biblioteca)
-  useEffect(() => {
-    if (incomingImage && incomingImage.url) loadImageFromUrl(incomingImage.url, incomingImage.name);
-  }, [incomingImage, loadImageFromUrl]);
 
   // ─── commitToBase ─────────────────────────────────────────────────────────
   const commitToBase = useCallback(() => {
@@ -419,44 +390,20 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
     ni.src=canvas.toDataURL();
   };
 
-  // ─── Export: construye el canvas final con el filtro horneado ─────────────
-  const buildExportCanvas = () => {
-    const canvas=canvasRef.current; if (!canvas||!cleanImgRef.current) return null;
+  // ─── FIX #3: Export hornea filtro CSS antes de exportar ──────────────────
+  const exportImage = () => {
+    const canvas=canvasRef.current; if (!canvas||!cleanImgRef.current) return;
+    // Clonar canvas para no mutar el original visible
     const tmp=document.createElement("canvas"); tmp.width=canvas.width; tmp.height=canvas.height;
     tmp.getContext("2d").drawImage(canvas,0,0);
     const flt=FILTERS.find(f=>f.id===activeFilter);
-    if (flt&&flt.id!=="none") bakeFilterToPixels(tmp, flt.css);
-    return { tmp, mime:"image/"+outputFormat, q:quality/100 };
-  };
-
-  // Exportar = descargar al equipo
-  const downloadImage = () => {
-    const e=buildExportCanvas(); if(!e) return;
+    if (flt&&flt.id!=="none") bakeFilterToPixels(tmp, flt.css); // hornear en copia
+    const mime="image/"+outputFormat, q=quality/100;
+    if (onExport) { tmp.toBlob(blob=>onExport(blob,outputFormat),mime,q); return; }
     const a=document.createElement("a");
-    a.href=e.tmp.toDataURL(e.mime,e.q);
-    a.download=`${(fileName||"imagen").replace(/\.[^.]+$/,"")}.${outputFormat==="jpeg"?"jpg":outputFormat}`;
+    a.href=tmp.toDataURL(mime,q);
+    a.download=`tool-editor-export.${outputFormat==="jpeg"?"jpg":outputFormat}`;
     a.click();
-  };
-
-  // Enviar a biblioteca = manda el blob al host (Supabase)
-  const sendToLibrary = () => {
-    const cb = onSaveToLibrary || onExport;
-    if (!cb) { alert("La biblioteca no está conectada en este contexto."); return; }
-    const e=buildExportCanvas(); if(!e) return;
-    e.tmp.toBlob(blob=>cb(blob,outputFormat), e.mime, e.q);
-  };
-
-  // Limpiar = vaciar el preview y resetear historial
-  const clearEditor = () => {
-    cleanImgRef.current=null;
-    setImgEl(null);
-    setFileName("");
-    setCanvasDims({ w:0, h:0 });
-    resetAdj(); setActiveFilter("none");
-    setCropStart(null); setCropEnd(null); setActiveTool("select");
-    histRef.current={ list:[], idx:-1 };
-    setHistoryLen(0); setHistPos(-1);
-    const c=canvasRef.current; if(c){ c.width=0; c.height=0; }
   };
 
   const copyToClipboard = () => {
@@ -483,27 +430,12 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
   const canUndo   = histPos > 0;
   const canRedo   = histPos < historyLen - 1;
 
-  // Estilos de los botones de acción de la topbar (Opción A)
-  const TB_BASE = { display:"inline-flex", alignItems:"center", gap:5, fontSize:11, borderRadius:6,
-                    padding:"5px 9px", cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit", lineHeight:1 };
-  const tb = {
-    solid:   { ...TB_BASE, background:"#1A4F9C", color:"#fff", border:"none" },
-    outline: { ...TB_BASE, background:"transparent", color:"#fff", border:"1px solid rgba(255,255,255,.35)" },
-    ghost:   { ...TB_BASE, background:"transparent", color:"rgba(255,255,255,.7)", border:"none", fontSize:13 },
-    gold:    { ...TB_BASE, background:"#C9A84C", color:"#0D2B55", border:"none", fontWeight:600 },
-    ai: (on)=>({ ...TB_BASE, background: on?"rgba(0,212,170,.15)":"transparent",
-                 color: on?"#00d4aa":"#fff", border:`1px solid ${on?"#00d4aa":"rgba(255,255,255,.35)"}` }),
-  };
-
   // ─── JSX ──────────────────────────────────────────────────────────────────
   return (
     <div style={S.root}>
       {/* TOP BAR */}
       <div style={S.topbar}>
-        <div style={{display:"flex",flexDirection:"column",justifyContent:"center",lineHeight:1.05,paddingRight:12,marginRight:2,borderRight:"1px solid rgba(255,255,255,.15)"}}>
-          <span style={{fontSize:13,fontWeight:700,letterSpacing:2,color:"#fff"}}>CORE<span style={{color:"#fff"}}>EDITOR</span></span>
-          <span style={{fontSize:11,color:"#fff"}}>Editá y exportá directo a la Biblioteca</span>
-        </div>
+        <span style={S.logo}>CORE<span style={{color:"#00d4aa"}}>EDITOR</span></span>
         <div style={S.tbGroup}>
           <TbBtn onClick={()=>fileInputRef.current.click()}>📂 abrir</TbBtn>
           <TbBtn onClick={undo} dim={!canUndo}>↩ deshacer</TbBtn>
@@ -525,17 +457,11 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
           </div>
         )}
         <div style={{flex:1}}/>
-        <span style={{fontSize:11,color:"rgba(255,255,255,.55)",marginRight:6,maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{fileName}</span>
+        <span style={{fontSize:11,color:"#aaa",marginRight:8}}>{fileName}</span>
         <input ref={fileInputRef} type="file" accept="image/*" style={{display:"none"}}
           onChange={e=>{if(e.target.files[0])loadImage(e.target.files[0]);}}/>
-        <div style={{display:"flex",alignItems:"center",gap:5}}>
-          <button style={tb.ai(aiEnabled)} onClick={()=>onToggleAI&&onToggleAI()} title="Activar AI">✨ {aiEnabled?"AI ✓":"AI"}</button>
-          <button style={tb.ghost} onClick={clearEditor} title="Limpiar preview">🧹</button>
-          <button style={tb.solid} onClick={()=>fileInputRef.current.click()} title="Subir del dispositivo">⬆ Subir</button>
-          <button style={tb.outline} onClick={()=>onRequestLibrary&&onRequestLibrary()} title="Abrir desde biblioteca">🗂 Biblioteca</button>
-          <button style={tb.outline} onClick={downloadImage} title="Exportar (descargar al equipo)">⬇ Exportar</button>
-          <button style={tb.gold} onClick={sendToLibrary} title="Enviar a biblioteca">☁ Enviar</button>
-        </div>
+        <button style={S.btnPrimary} onClick={()=>fileInputRef.current.click()}>+ cargar</button>
+        <button style={{...S.btnPrimary,...S.btnAccent}} onClick={exportImage}>⬇ exportar</button>
       </div>
 
       <div style={S.main}>
@@ -743,7 +669,7 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
                 <div>PNG → sin pérdida, soporta transparencia</div>
                 <div>WebP → mejor ratio calidad/tamaño</div>
               </div>
-              <button style={S.applyBtn} onClick={downloadImage}>⬇ descargar imagen</button>
+              <button style={S.applyBtn} onClick={exportImage}>⬇ descargar imagen</button>
               <button style={{...S.applyBtn,...S.applyBtnGhost,marginTop:4}} onClick={copyToClipboard}>📋 copiar al portapapeles</button>
             </>}
           </div>
