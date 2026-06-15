@@ -1,6 +1,6 @@
 {
   "installCommand": "corepack enable && pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm --filter core-market build",
-  "outputDirectory": "apps/core-market/dist",
+  "buildCommand": "pnpm --filter core-browser-share build",
+  "outputDirectory": "tools/core-browser-share/.next",
   "regions": ["iad1"]
 }
