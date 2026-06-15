@@ -2,5 +2,6 @@
   "installCommand": "corepack enable && pnpm install --frozen-lockfile",
   "buildCommand": "pnpm --filter core-browser-share build",
   "outputDirectory": "tools/core-browser-share/.next",
+  "framework": null,
   "regions": ["iad1"]
 }
