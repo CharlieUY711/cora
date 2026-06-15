@@ -509,6 +509,10 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
     gold:    { ...TB_BASE, background:"#C9A84C", color:"#0D2B55", border:"none", fontWeight:600 },
     ai: (on)=>({ ...TB_BASE, background: on?"rgba(0,212,170,.15)":"transparent",
                  color: on?"#00d4aa":"#fff", border:`1px solid ${on?"#00d4aa":"rgba(255,255,255,.35)"}` }),
+    group: { display:"inline-flex", borderRadius:6, overflow:"hidden" },
+    seg: (bg,color,left)=>({ ...TB_BASE, background:bg, color, border:"none", borderRadius:0,
+           fontWeight: color==="#0D2B55"?600:500,
+           borderRight: left ? `1px solid ${color==="#0D2B55"?"rgba(0,0,0,.15)":"rgba(255,255,255,.25)"}` : "none" }),
   };
 
   // ─── JSX ──────────────────────────────────────────────────────────────────
@@ -544,13 +548,17 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
         <span style={{fontSize:11,color:"rgba(255,255,255,.55)",marginRight:6,maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{fileName}</span>
         <input ref={fileInputRef} type="file" accept="image/*" style={{display:"none"}}
           onChange={e=>{if(e.target.files[0])loadImage(e.target.files[0]);}}/>
-        <div style={{display:"flex",alignItems:"center",gap:5}}>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
           <button style={tb.ai(aiEnabled)} onClick={()=>onToggleAI&&onToggleAI()} title="Activar AI">✨ {aiEnabled?"AI ✓":"AI"}</button>
           <button style={tb.ghost} onClick={clearEditor} title="Limpiar preview">🧹</button>
-          <button style={tb.solid} onClick={()=>fileInputRef.current.click()} title="Subir del dispositivo">⬆ Subir</button>
-          <button style={tb.outline} onClick={()=>onRequestLibrary&&onRequestLibrary()} title="Abrir desde biblioteca">🗂 Biblioteca</button>
-          <button style={tb.outline} onClick={downloadImage} title="Exportar (descargar al equipo)">⬇ Exportar</button>
-          <button style={tb.gold} onClick={sendToLibrary} title="Enviar a biblioteca">☁ Enviar</button>
+          <div style={tb.group}>
+            <button style={tb.seg("#1A4F9C","#fff",true)}  onClick={()=>fileInputRef.current.click()} title="Subir del dispositivo">⬆ Subir</button>
+            <button style={tb.seg("#1A4F9C","#fff",false)} onClick={downloadImage} title="Descargar al equipo">⬇ Descargar</button>
+          </div>
+          <div style={tb.group}>
+            <button style={tb.seg("#C9A84C","#0D2B55",true)}  onClick={()=>onRequestLibrary&&onRequestLibrary()} title="Abrir desde biblioteca">⬇ Abrir</button>
+            <button style={tb.seg("#C9A84C","#0D2B55",false)} onClick={sendToLibrary} title="Enviar a biblioteca">⬆ Enviar</button>
+          </div>
         </div>
       </div>
 
