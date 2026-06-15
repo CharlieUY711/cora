@@ -1,0 +1,7 @@
+{
+  "buildCommand": "pnpm --filter core-browser-share build",
+  "devCommand": "pnpm --filter core-browser-share dev",
+  "installCommand": "pnpm install",
+  "outputDirectory": "tools/core-browser-share/.next",
+  "framework": "nextjs"
+}
