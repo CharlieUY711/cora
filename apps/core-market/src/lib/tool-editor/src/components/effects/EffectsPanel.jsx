@@ -29,6 +29,7 @@ import {
   applyWatermarkInvisible,
   readWatermarkInvisible,
 } from "./effectsEngine.js";
+import { removeBackground } from "@imgly/background-removal";
 
 // ─── Estilos locales ──────────────────────────────────────────────────────────
 
@@ -105,6 +106,11 @@ function Section({ title, icon, badge, children, defaultOpen=false }) {
 
 export default function EffectsPanel({ canvasRef, cleanImgRef, hasImage, onCommit }) {
 
+  // ── Quitar fondo (IA) ─────────────────────────────────────────────────────────
+  const [bgBusy,     setBgBusy]     = useState(false);
+  const [bgProgress, setBgProgress] = useState(0);
+  const [bgStatus,   setBgStatus]   = useState("");
+
   // ── Blur ────────────────────────────────────────────────────────────────────
   const [blurRadius,    setBlurRadius]    = useState(8);
   const [blurStatus,    setBlurStatus]    = useState("");
@@ -167,6 +173,36 @@ export default function EffectsPanel({ canvasRef, cleanImgRef, hasImage, onCommi
   };
 
   // ── Handlers ─────────────────────────────────────────────────────────────────
+
+  const handleRemoveBg = () => withCanvas((canvas) => {
+    if (bgBusy) return;
+    setBgBusy(true); setBgProgress(0);
+    setBgStatus("⟳ procesando... (la primera vez descarga el modelo, puede tardar)");
+    (async () => {
+      try {
+        const blob = await new Promise(r => canvas.toBlob(r, "image/png"));
+        const out = await removeBackground(blob, {
+          progress: (_k, cur, total) => { if (total) setBgProgress(Math.round((cur / total) * 100)); },
+        });
+        const url = URL.createObjectURL(out);
+        const img = new Image();
+        img.onload = () => {
+          canvas.width = img.width; canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
+          commit(canvas, "✓ Fondo eliminado", setBgStatus);
+          setBgBusy(false);
+        };
+        img.onerror = () => { setBgBusy(false); setBgStatus("⚠ No se pudo cargar el resultado"); };
+        img.src = url;
+      } catch (e) {
+        setBgBusy(false);
+        setBgStatus("⚠ " + ((e && e.message) || "Error al quitar el fondo"));
+      }
+    })();
+  }, setBgStatus);
 
   const handleBlur = () => withCanvas(canvas => {
     setBlurStatus("⟳ aplicando...");
@@ -247,6 +283,28 @@ export default function EffectsPanel({ canvasRef, cleanImgRef, hasImage, onCommi
 
   return (
     <div>
+
+      {/* 0. QUITAR FONDO (IA) */}
+      <Section title="Quitar fondo" icon="✂" badge="IA" defaultOpen={true}>
+        <div style={{ fontSize:10, color:"#777", marginBottom:8, lineHeight:1.6 }}>
+          Recorta el sujeto y deja el fondo transparente. Proceso 100% local (IA en el navegador).
+          Exporta como PNG o WEBP para conservar la transparencia.
+        </div>
+        <button style={{ ...E.applyBtn, background:"#7c3aed", opacity: bgBusy ? 0.6 : 1, cursor: bgBusy ? "wait" : "pointer" }}
+          disabled={bgBusy} onClick={handleRemoveBg}>
+          {bgBusy ? ("⟳ quitando fondo... " + bgProgress + "%") : "✂ quitar fondo"}
+        </button>
+        {bgBusy && (
+          <div style={{ height:4, background:"#eee", borderRadius:2, marginTop:6, overflow:"hidden" }}>
+            <div style={{ height:"100%", width: bgProgress + "%", background:"#7c3aed", transition:"width .2s" }}/>
+          </div>
+        )}
+        {bgStatus && !bgBusy && (
+          <div style={bgStatus.startsWith("✓") ? E.statusOk : bgStatus.startsWith("⚠") ? E.statusErr : E.statusInfo}>
+            {bgStatus}
+          </div>
+        )}
+      </Section>
 
       {/* 1. BLUR GAUSSIANO */}
       <Section title="Blur gaussiano" icon="〜" defaultOpen={true}>
