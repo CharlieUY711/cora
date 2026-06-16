@@ -95,7 +95,7 @@ function TbBtn({ onClick, children, dim, accent, danger }) {
   return (
     <button onClick={onClick} style={{
       background: accent?"#00d4aa":"none",
-      color: accent?"#fff":danger?"#dc2626":"#666",
+      color: accent?"#fff":danger?"#ff6b6b":"#fff",
       border:"none", padding:"4px 9px", borderRadius:4,
       cursor:"pointer", fontSize:11, opacity:dim?0.35:1,
       fontFamily:"inherit",
@@ -255,9 +255,13 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
     image.src = url;
   }, [fitToView, saveSnap, resetAdj]);
 
-  // Carga la imagen entrante desde el host (selector de biblioteca)
+  // Carga la imagen entrante desde el host (selector de biblioteca).
+  // Si ya hay una imagen en el preview, la guarda en biblioteca antes de reemplazarla.
   useEffect(() => {
-    if (incomingImage && incomingImage.url) loadImageFromUrl(incomingImage.url, incomingImage.name);
+    if (incomingImage && incomingImage.url) {
+      if (cleanImgRef.current && (onSaveToLibrary || onExport)) sendToLibrary();
+      loadImageFromUrl(incomingImage.url, incomingImage.name);
+    }
   }, [incomingImage, loadImageFromUrl]);
 
   // ─── commitToBase ─────────────────────────────────────────────────────────
@@ -525,7 +529,6 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
           <span style={{fontSize:11,color:"#fff"}}>Editá y exportá directo a la Biblioteca</span>
         </div>
         <div style={S.tbGroup}>
-          <TbBtn onClick={()=>fileInputRef.current.click()}>📂 abrir</TbBtn>
           <TbBtn onClick={undo} dim={!canUndo}>↩ deshacer</TbBtn>
           <TbBtn onClick={redo} dim={!canRedo}>↪ rehacer</TbBtn>
         </div>
@@ -547,10 +550,10 @@ function ToolEditorInner({ initialImage, config: userConfig, onExport, onSaveToL
         <div style={{flex:1}}/>
         <span style={{fontSize:11,color:"rgba(255,255,255,.55)",marginRight:6,maxWidth:120,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{fileName}</span>
         <input ref={fileInputRef} type="file" accept="image/*" style={{display:"none"}}
-          onChange={e=>{if(e.target.files[0])loadImage(e.target.files[0]);}}/>
+          onChange={e=>{if(e.target.files[0]){ if(cleanImgRef.current&&(onSaveToLibrary||onExport))sendToLibrary(); loadImage(e.target.files[0]); }}}/>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <button style={tb.ai(aiEnabled)} onClick={()=>onToggleAI&&onToggleAI()} title="Activar AI">✨ {aiEnabled?"AI ✓":"AI"}</button>
-          <button style={tb.ghost} onClick={clearEditor} title="Limpiar preview">🧹</button>
+          <button style={tb.ghost} onClick={clearEditor} title="Nuevo — descarta y resetea todo">✚ Nuevo</button>
           <div style={tb.group}>
             <button style={tb.seg("#1A4F9C","#fff",true)}  onClick={()=>fileInputRef.current.click()} title="Subir del dispositivo">⬆ Subir</button>
             <button style={tb.seg("#1A4F9C","#fff",false)} onClick={downloadImage} title="Descargar al equipo">⬇ Descargar</button>
